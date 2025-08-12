@@ -1,6 +1,5 @@
-import type { Algorithm } from '../types';
-
-export const algorithms: Record<string, Algorithm> = {
+// Legacy algorithms data - kept for backward compatibility
+export const algorithms = {
   bubble: {
     name: 'Bubble Sort',
     description: 'Bubble sort repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.',
@@ -36,10 +35,6 @@ export const algorithms: Record<string, Algorithm> = {
     spaceComplexity: 'O(1)',
     category: 'sorting'
   }
-};
-
-export const generateRandomArray = (size: number = 50, min: number = 5, max: number = 300): number[] => {
-  return Array.from({ length: size }, () => Math.floor(Math.random() * (max - min + 1)) + min);
 };
 
 export const sleep = (ms: number): Promise<void> => {

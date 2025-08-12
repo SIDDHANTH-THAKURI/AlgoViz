@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Maximize2 } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import type { VisualizationState } from '../types';
 
 interface VisualizerProps {
@@ -10,18 +10,30 @@ interface VisualizerProps {
 
 const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number | null>(null);
-  const [currentMessage, setCurrentMessage] = useState<string>('');
+  const [currentMessage, setCurrentMessage] = useState<string>('Ready to visualize!');
 
   const getBarColor = (index: number, step = visualizationState.steps[visualizationState.currentStep]) => {
-    if (!step) return '#667eea'; // Default gradient start
+    if (!step) return '#667eea';
 
-    if (step.sorted?.includes(index)) return '#10b981'; // Green for sorted
-    if (step.comparing?.includes(index)) return '#f59e0b'; // Orange for comparing
-    if (step.swapping?.includes(index)) return '#ef4444'; // Red for swapping
-    if (step.pivot === index) return '#8b5cf6'; // Purple for pivot
+    if (step.sorted?.includes(index)) return '#10b981';
+    if (step.comparing?.includes(index)) return '#f59e0b';
+    if (step.swapping?.includes(index)) return '#ef4444';
+    if (step.pivot === index) return '#8b5cf6';
 
-    return '#667eea'; // Default gradient start
+    return '#667eea';
+  };
+
+  // Helper function to draw rounded rectangle (compatible with all browsers)
+  const drawRoundedRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) => {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x, y + height);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
   };
 
   const drawArray = (currentArray: number[], step?: any) => {
@@ -35,50 +47,47 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const barWidth = (canvas.width - 40) / currentArray.length;
+    const barWidth = Math.max(8, (canvas.width - 40) / currentArray.length);
     const maxHeight = Math.max(...currentArray);
     const padding = 20;
 
     currentArray.forEach((value, index) => {
-      const barHeight = (value / maxHeight) * (canvas.height - 60);
+      const barHeight = Math.max(10, (value / maxHeight) * (canvas.height - 80));
       const x = padding + index * barWidth;
-      const y = canvas.height - barHeight - 20;
+      const y = canvas.height - barHeight - 30;
 
       const baseColor = getBarColor(index, step);
       
-      // Create beautiful gradient for each bar
+      // Create gradient for each bar
       const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
       gradient.addColorStop(0, baseColor);
       gradient.addColorStop(1, baseColor + '80');
 
       // Draw bar with rounded top
       ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.roundRect(x + 1, y, barWidth - 2, barHeight, [4, 4, 0, 0]);
+      drawRoundedRect(ctx, x + 1, y, barWidth - 2, barHeight, 4);
       ctx.fill();
 
       // Add subtle border
       ctx.strokeStyle = baseColor;
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.roundRect(x + 1, y, barWidth - 2, barHeight, [4, 4, 0, 0]);
+      drawRoundedRect(ctx, x + 1, y, barWidth - 2, barHeight, 4);
       ctx.stroke();
 
       // Add value labels for smaller arrays
-      if (currentArray.length <= 20) {
+      if (currentArray.length <= 25) {
         ctx.fillStyle = '#374151';
-        ctx.font = '12px Inter, sans-serif';
+        ctx.font = '11px Inter, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(value.toString(), x + barWidth / 2, canvas.height - 5);
+        ctx.fillText(value.toString(), x + barWidth / 2, canvas.height - 10);
       }
 
       // Add glow effect for active elements
       if (step?.comparing?.includes(index) || step?.swapping?.includes(index) || step?.pivot === index) {
         ctx.shadowColor = baseColor;
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = baseColor + '40';
-        ctx.beginPath();
-        ctx.roundRect(x - 2, y - 2, barWidth + 2, barHeight + 4, [6, 6, 0, 0]);
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = baseColor + '30';
+        drawRoundedRect(ctx, x - 1, y - 1, barWidth, barHeight + 2, 5);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -90,36 +99,23 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
     }
   };
 
+  // Initial draw
   useEffect(() => {
     drawArray(array);
+    setCurrentMessage('Array generated! Click Play to start visualization.');
   }, [array]);
 
+  // Handle visualization steps
   useEffect(() => {
-    if (visualizationState.isPlaying && visualizationState.steps.length > 0) {
-      const animate = () => {
-        const currentStep = visualizationState.steps[visualizationState.currentStep];
-        if (currentStep) {
+    if (visualizationState.steps.length > 0) {
+      const currentStep = visualizationState.steps[visualizationState.currentStep];
+      if (currentStep) {
+        if (currentStep.array) {
           drawArray(currentStep.array, currentStep);
         }
-        
-        if (visualizationState.currentStep < visualizationState.steps.length - 1) {
-          setTimeout(() => {
-            if (visualizationState.isPlaying) {
-              animationRef.current = requestAnimationFrame(animate);
-            }
-          }, 101 - visualizationState.speed);
-        }
-      };
-
-      animate();
-    }
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
       }
-    };
-  }, [visualizationState]);
+    }
+  }, [visualizationState.currentStep, visualizationState.steps]);
 
   return (
     <motion.div
@@ -133,53 +129,70 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           <Eye size={24} className="text-purple-600" />
           <h2 className="text-3xl font-bold text-gray-800">Live Visualization</h2>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="p-2 rounded-lg bg-white/50 hover:bg-white/70 transition-colors"
-        >
-          <Maximize2 size={20} className="text-gray-600" />
-        </motion.button>
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <span>Array Size: {array.length}</span>
+        </div>
       </div>
 
       <div className="canvas-container mb-6">
         <canvas
           ref={canvasRef}
-          width={900}
-          height={450}
-          className="w-full h-auto max-w-full"
-          style={{ maxHeight: '450px' }}
+          width={800}
+          height={400}
+          className="w-full h-auto max-w-full border border-gray-200 rounded-lg"
+          style={{ maxHeight: '400px' }}
         />
       </div>
       
       {currentMessage && (
         <motion.div
+          key={currentMessage}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-xl text-center"
+          transition={{ duration: 0.3 }}
+          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-xl text-center mb-6"
         >
           <div className="font-semibold text-lg">{currentMessage}</div>
         </motion.div>
       )}
 
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
         <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
+          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#667eea' }}></div>
           <span className="font-medium">Default</span>
         </div>
         <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 bg-orange-500 rounded"></div>
+          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
           <span className="font-medium">Comparing</span>
         </div>
         <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
+          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#ef4444' }}></div>
           <span className="font-medium">Swapping</span>
         </div>
         <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
+          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#10b981' }}></div>
           <span className="font-medium">Sorted</span>
         </div>
       </div>
+
+      {visualizationState.steps.length > 0 && (
+        <div className="mt-6 bg-white/70 rounded-xl p-4">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-700">Progress</span>
+            <span className="text-sm text-gray-600">
+              {visualizationState.currentStep + 1} / {visualizationState.steps.length}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="h-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300"
+              style={{ 
+                width: `${((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100}%` 
+              }}
+            />
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
