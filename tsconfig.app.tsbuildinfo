@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/algorithms/sorting.ts","./src/components/algorithminfo.tsx","./src/components/algorithmselector.tsx","./src/components/controls.tsx","./src/components/header.tsx","./src/components/visualizer.tsx","./src/types/index.ts","./src/utils/algorithms.ts"],"version":"5.8.3"}
