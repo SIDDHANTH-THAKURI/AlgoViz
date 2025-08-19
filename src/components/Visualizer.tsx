@@ -147,13 +147,13 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           className="glass-card p-8 max-w-6xl mx-auto"
         >
           {/* Visualization Header */}
-          <div className="viz-toolbar">
-            <div className="flex items-center gap-3">
-              <BarChart3 size={22} className="text-purple-600" />
-              <h2 className="text-2xl font-extrabold text-gray-800">Live Visualization</h2>
+            <div className="viz-toolbar glass-card">
+              <div className="flex items-center gap-3">
+                <BarChart3 size={22} className="text-purple-600" />
+                <h2 className="text-2xl font-extrabold text-white">Live Visualization</h2>
+              </div>
+              <span className="viz-badge">Array: {array.length}</span>
             </div>
-            <span className="viz-badge">Array: {array.length}</span>
-          </div>
 
           {/* Canvas Container */}
           <div className="relative mb-8">
@@ -208,12 +208,12 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           {/* Progress Indicator */}
           {visualizationState.steps.length > 0 && (
             <div className="glass-card p-6">
-              <div className="flex justify-between items-center mb-3">
-                <h4 className="font-semibold text-white">Visualization Progress</h4>
-                <span className="text-sm text-gray-400">
-                  {visualizationState.currentStep + 1} / {visualizationState.steps.length}
-                </span>
-              </div>
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="font-semibold text-white">Visualization Progress</h4>
+                  <span className="text-sm text-gray-300">
+                    {visualizationState.currentStep + 1} / {visualizationState.steps.length}
+                  </span>
+                </div>
               <div className="progress-track">
                 <div 
                   className="progress-fill transition-all duration-300"
@@ -222,13 +222,13 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
                   }}
                 />
               </div>
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
-                <span>Start</span>
-                <span>{Math.round(((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100)}%</span>
-                <span>Complete</span>
+                <div className="flex justify-between text-xs text-gray-300 mt-2">
+                  <span>Start</span>
+                  <span>{Math.round(((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100)}%</span>
+                  <span>Complete</span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </motion.div>
       </div>
     </section>

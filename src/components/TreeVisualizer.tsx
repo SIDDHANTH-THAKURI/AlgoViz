@@ -17,7 +17,7 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
   if (!tree) {
     return (
       <div className="glass-card p-8">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-gray-400">
           <div className="text-6xl mb-4">🌳</div>
           <p className="text-lg">Tree is empty</p>
           <p className="text-sm">Add some nodes to see the visualization</p>

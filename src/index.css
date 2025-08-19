@@ -59,6 +59,7 @@ body {
   border-radius: 1.25rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #ffffff;
 }
 
 .glass-card:hover {
@@ -100,6 +101,24 @@ body {
 .btn-primary {
   background: linear-gradient(135deg, #8b5cf6, #22d3ee 60%, #60a5fa);
   color: white;
+  border-color: transparent;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #eaf0ff;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f59e0b, #eab308);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
   border-color: transparent;
 }
 
@@ -734,25 +753,6 @@ dditional classes for the new header */
 
 .text-transparent {
   color: transparent;
-}
-
-/* Enhanced glass card for header */
-.glass-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.25rem;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #ffffff;
-}
-
-.glass-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Gradient backgrounds */
@@ -1649,10 +1649,6 @@ Additional classes for AlgorithmMessage */
   justify-content: space-between;
   padding: .9rem 1.1rem;
   margin-bottom: 1rem;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .66));
-  border: 1px solid rgba(0, 0, 0, .06);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
 }
 
 /* A little pill for stats (array size, nodes, etc.) */
@@ -1661,18 +1657,18 @@ Additional classes for AlgorithmMessage */
   font-weight: 600;
   padding: .25rem .6rem;
   border-radius: 999px;
-  background: rgba(99, 102, 241, .12);
-  border: 1px solid rgba(99, 102, 241, .28);
-  color: #1f2937;
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #eaf0ff;
 }
 
 /* Upgrade the default canvas container look */
 .canvas-container {
-  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 18px;
   padding: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, .06);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 /* Progress polish */

@@ -116,19 +116,19 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
                     <div className={`text-2xl font-bold ${status.textColor} mb-1`}>
                       {currentStep + 1}
                     </div>
-                    <div className="text-sm text-gray-400">Current Step</div>
+                    <div className="text-sm text-gray-300">Current Step</div>
                   </div>
                   <div className="glass-card p-4">
                     <div className="text-2xl font-bold text-white mb-1">
                       {steps.length}
                     </div>
-                    <div className="text-sm text-gray-400">Total Steps</div>
+                    <div className="text-sm text-gray-300">Total Steps</div>
                   </div>
                   <div className="glass-card p-4">
                     <div className={`text-2xl font-bold ${status.textColor} mb-1`}>
                       {Math.round(((currentStep + 1) / steps.length) * 100)}%
                     </div>
-                    <div className="text-sm text-gray-400">Complete</div>
+                    <div className="text-sm text-gray-300">Complete</div>
                   </div>
                 </div>
 
@@ -136,7 +136,7 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
                 <div className="glass-card p-4">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm font-medium text-white">Algorithm Progress</span>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-gray-300">
                       {currentStep + 1} / {steps.length}
                     </span>
                   </div>
@@ -162,7 +162,7 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
               >
                 <div className="text-6xl mb-4">🚀</div>
                 <h3 className="text-xl font-bold text-white mb-2">Ready to Begin</h3>
-                <p className="text-gray-400">
+                <p className="text-gray-300">
                   Select an algorithm and click "Start Visualization" to see the magic happen!
                 </p>
               </motion.div>

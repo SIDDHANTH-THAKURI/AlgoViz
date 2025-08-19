@@ -72,21 +72,21 @@ function Controls({
         className="space-y-6"
       >
         <div className="flex flex-wrap items-center justify-center gap-4">
-          {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
-            <div className="flex items-center gap-2">
-              <label htmlFor="target" className="text-gray-700 font-semibold">
-                {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
-              </label>
-              <input
-                id="target"
-                type="number"
-                value={searchTarget}
-                onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
-                disabled={isDisabled}
-                className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          )}
+            {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
+              <div className="flex items-center gap-2">
+                <label htmlFor="target" className="text-white font-semibold">
+                  {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
+                </label>
+                <input
+                  id="target"
+                  type="number"
+                  value={searchTarget}
+                  onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
+                  disabled={isDisabled}
+                  className="input w-20"
+                />
+              </div>
+            )}
 
           <button
             onClick={onGenerateData}
@@ -129,40 +129,40 @@ function Controls({
           </button>
         </div>
 
-        <div className="flex items-center justify-center gap-6 bg-white/50 rounded-2xl p-4 backdrop-blur-sm">
-          <label htmlFor="speed" className="text-gray-700 font-semibold text-lg">
-            Speed:
-          </label>
+          <div className="glass-card flex items-center justify-center gap-6 p-4">
+            <label htmlFor="speed" className="text-white font-semibold text-lg">
+              Speed:
+            </label>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500 font-medium">Slow</span>
-            <input
-              id="speed"
-              type="range"
-              min="1"
-              max="100"
-              value={speed}
-              onChange={(e) => onSpeedChange(parseInt(e.target.value))}
-              className="speed-slider w-40"
-            />
-            <span className="text-sm text-gray-500 font-medium">Fast</span>
-          </div>
-
-          <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-xl font-bold min-w-[60px] text-center">
-            {speed}%
-          </div>
-        </div>
-
-        {visualizationState.steps.length > 0 && (
-          <div className="text-center bg-white/70 rounded-xl p-4 backdrop-blur-sm">
-            <div className="text-lg font-semibold text-gray-700 mb-2">
-              {isPlaying ? 'Running...' : isPaused ? 'Paused' : 'Ready'}
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-300 font-medium">Slow</span>
+              <input
+                id="speed"
+                type="range"
+                min="1"
+                max="100"
+                value={speed}
+                onChange={(e) => onSpeedChange(parseInt(e.target.value))}
+                className="speed-slider w-40"
+              />
+              <span className="text-sm text-gray-300 font-medium">Fast</span>
             </div>
-            <div className="text-sm text-gray-600">
-              Step {visualizationState.currentStep + 1} of {visualizationState.steps.length}
+
+            <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-xl font-bold min-w-[60px] text-center">
+              {speed}%
             </div>
           </div>
-        )}
+
+          {visualizationState.steps.length > 0 && (
+            <div className="text-center glass-card p-4">
+              <div className="text-lg font-semibold text-white mb-2">
+                {isPlaying ? 'Running...' : isPaused ? 'Paused' : 'Ready'}
+              </div>
+              <div className="text-sm text-gray-300">
+                Step {visualizationState.currentStep + 1} of {visualizationState.steps.length}
+              </div>
+            </div>
+          )}
       </motion.div>
     </div>
   );
@@ -498,9 +498,9 @@ function App() {
             <p className="text-gray-400">
               Built with ❤️ for algorithm enthusiasts and learners
             </p>
-            <p className="text-gray-500 text-sm mt-2">
-              © 2024 AlgoViz - Interactive Algorithm Visualizations
-            </p>
+              <p className="text-gray-300 text-sm mt-2">
+                © 2024 AlgoViz - Interactive Algorithm Visualizations
+              </p>
           </div>
         </div>
       </footer>

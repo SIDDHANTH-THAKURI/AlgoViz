@@ -246,7 +246,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
   if (!details) {
     return (
       <div className="glass-card p-6">
-        <p className="text-gray-600 text-center">Algorithm information not available</p>
+        <p className="text-gray-400 text-center">Algorithm information not available</p>
       </div>
     );
   }
@@ -372,7 +372,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Stable</span>
+                      <span className="text-sm font-medium text-gray-300">Stable</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'inPlace' in details && details.inPlace ? (
@@ -380,7 +380,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">In-Place</span>
+                      <span className="text-sm font-medium text-gray-300">In-Place</span>
                   </div>
                 </>
               )}
@@ -392,7 +392,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Optimal</span>
+                      <span className="text-sm font-medium text-gray-300">Optimal</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'complete' in details && details.complete ? (
@@ -400,7 +400,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Complete</span>
+                      <span className="text-sm font-medium text-gray-300">Complete</span>
                   </div>
                 </>
               )}
@@ -412,7 +412,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Balanced</span>
+                      <span className="text-sm font-medium text-gray-300">Balanced</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'complete' in details && details.complete ? (
@@ -420,7 +420,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                     ) : (
                       <XCircle size={16} className="text-red-600" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Complete</span>
+                      <span className="text-sm font-medium text-gray-300">Complete</span>
                   </div>
                 </>
               )}
