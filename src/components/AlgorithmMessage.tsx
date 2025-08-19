@@ -14,26 +14,26 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
     : 'Ready to start visualization';
 
   const getStatusInfo = () => {
-    if (isPlaying) return { 
-      icon: <Activity size={24} />, 
-      label: 'Running', 
-      gradient: 'from-green-500 to-emerald-600',
-      textColor: 'text-green-400',
-      bgColor: 'bg-green-500/20'
+    if (isPlaying) return {
+      icon: <Activity size={24} />,
+      label: 'Running',
+      gradient: 'from-accent-500 to-accent-600',
+      textColor: 'text-accent-500',
+      bgColor: 'bg-accent-500/20'
     };
-    if (isPaused) return { 
-      icon: <Pause size={24} />, 
-      label: 'Paused', 
-      gradient: 'from-orange-500 to-yellow-500',
-      textColor: 'text-orange-400',
-      bgColor: 'bg-orange-500/20'
+    if (isPaused) return {
+      icon: <Pause size={24} />,
+      label: 'Paused',
+      gradient: 'from-primary-500 to-primary-600',
+      textColor: 'text-primary-500',
+      bgColor: 'bg-primary-500/20'
     };
-    return { 
-      icon: <Zap size={24} />, 
-      label: 'Ready', 
-      gradient: 'from-blue-500 to-purple-600',
-      textColor: 'text-blue-400',
-      bgColor: 'bg-blue-500/20'
+    return {
+      icon: <Zap size={24} />,
+      label: 'Ready',
+      gradient: 'from-primary-500 to-accent-500',
+      textColor: 'text-primary-500',
+      bgColor: 'bg-primary-500/20'
     };
   };
 
@@ -46,7 +46,7 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
         <motion.div
           animate={{ rotate: 360, scale: [1, 1.2, 1] }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-accent-500/10 to-primary-500/10 rounded-full blur-3xl"
         />
       </div>
 
@@ -59,8 +59,8 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <MessageCircle size={28} className="text-purple-400" />
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-purple-200 to-pink-300 bg-clip-text text-transparent">
+            <MessageCircle size={28} className="text-accent-500" />
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-accent-500 to-primary-500 bg-clip-text text-transparent">
               Algorithm Status
             </h2>
           </div>
@@ -95,7 +95,7 @@ const AlgorithmMessage = ({ visualizationState }: AlgorithmMessageProps) => {
               transition={{ duration: 0.3 }}
               className="mb-6"
             >
-              <div className={`${status.bgColor} rounded-xl p-6 border border-white/10`}>
+              <div className={`${status.bgColor} rounded-2xl p-6 border border-white/10`}>
                 <p className="text-white text-lg leading-relaxed font-medium">
                   {currentMessage}
                 </p>

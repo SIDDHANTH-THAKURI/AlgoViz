@@ -246,7 +246,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
   if (!details) {
     return (
       <div className="glass-card p-6">
-        <p className="text-gray-600 text-center">Algorithm information not available</p>
+        <p className="text-gray-200 text-center">Algorithm information not available</p>
       </div>
     );
   }
@@ -281,23 +281,23 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
     return names[alg] || alg;
   };
 
-  const getComplexityColor = (complexity: string): string => {
+  const getComplexityColorClass = (complexity: string): string => {
     if (complexity.includes('n²') || complexity.includes('n^2')) {
-      return 'linear-gradient(135deg, #dc2626, #be185d)'; // Red for quadratic
+      return 'from-red-600 to-pink-700';
     }
     if (complexity.includes('n log n')) {
-      return 'linear-gradient(135deg, #059669, #047857)'; // Green for n log n
+      return 'from-emerald-600 to-emerald-700';
     }
     if (complexity.includes('log n')) {
-      return 'linear-gradient(135deg, #2563eb, #1d4ed8)'; // Blue for logarithmic
+      return 'from-blue-600 to-blue-700';
     }
     if (complexity.includes('n') && !complexity.includes('log')) {
-      return 'linear-gradient(135deg, #f59e0b, #d97706)'; // Orange for linear
+      return 'from-amber-500 to-amber-600';
     }
     if (complexity.includes('1')) {
-      return 'linear-gradient(135deg, #10b981, #059669)'; // Teal for constant
+      return 'from-emerald-500 to-emerald-600';
     }
-    return 'linear-gradient(135deg, #7c3aed, #5b21b6)'; // Purple for others
+    return 'from-violet-600 to-violet-800';
   };
 
   const getDifficulty = (alg: AlgorithmType): string => {
@@ -344,7 +344,7 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
         </div>
         <div>
           <h2 className="text-2xl font-bold">{getAlgorithmName(algorithm)}</h2>
-          <p className="opacity-80 text-sm">{details.category} Algorithm Analysis</p>
+          <p className="opacity-80 text-sm text-gray-200">{details.category} Algorithm Analysis</p>
         </div>
       </div>
 
@@ -353,34 +353,34 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
         {/* Left Column - Description & How it works */}
         <div className="space-y-4">
           <div className="glass-card p-4">
-            <h4 className="font-semibold mb-2 flex items-center gap-2">
+            <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
               <Info size={16} />
               How It Works
             </h4>
-            <p className="text-sm leading-relaxed opacity-90">{details.howItWorks}</p>
+            <p className="text-sm leading-relaxed opacity-90 text-gray-200">{details.howItWorks}</p>
           </div>
 
           {/* Properties - Adaptive based on algorithm type */}
           <div className="glass-card p-4">
-            <h4 className="font-semibold mb-3">Properties</h4>
+            <h4 className="font-semibold text-white mb-3">Properties</h4>
             <div className="flex gap-6 flex-wrap">
               {details.category === 'Sorting' && (
                 <>
                   <div className="flex items-center gap-2">
                     {'stable' in details && details.stable ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Stable</span>
+                    <span className="text-sm font-medium text-gray-200">Stable</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'inPlace' in details && details.inPlace ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">In-Place</span>
+                    <span className="text-sm font-medium text-gray-200">In-Place</span>
                   </div>
                 </>
               )}
@@ -388,19 +388,19 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                 <>
                   <div className="flex items-center gap-2">
                     {'optimal' in details && details.optimal ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Optimal</span>
+                    <span className="text-sm font-medium text-gray-200">Optimal</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'complete' in details && details.complete ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Complete</span>
+                    <span className="text-sm font-medium text-gray-200">Complete</span>
                   </div>
                 </>
               )}
@@ -408,19 +408,19 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
                 <>
                   <div className="flex items-center gap-2">
                     {'balanced' in details && details.balanced ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Balanced</span>
+                    <span className="text-sm font-medium text-gray-200">Balanced</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {'complete' in details && details.complete ? (
-                      <CheckCircle size={16} className="text-green-600" />
+                      <CheckCircle size={16} className="text-primary-500" />
                     ) : (
-                      <XCircle size={16} className="text-red-600" />
+                      <XCircle size={16} className="text-accent-500" />
                     )}
-                    <span className="text-sm font-medium text-gray-700">Complete</span>
+                    <span className="text-sm font-medium text-gray-200">Complete</span>
                   </div>
                 </>
               )}
@@ -431,26 +431,22 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
         {/* Right Column - Complexity */}
         <div className="space-y-4">
           {/* Time Complexity - Compact */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="glass-card p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Clock className="text-orange-500" size={18} />
-              <h4 className="font-semibold text-gray-800">Time Complexity</h4>
+              <Clock className="text-primary-500" size={18} />
+              <h4 className="font-semibold text-white">Time Complexity</h4>
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">Best:</span>
-                <div className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300" style={{
-                  background: getComplexityColor(details.bestCase)
-                }}>
+                <span className="text-sm font-medium text-gray-200">Best:</span>
+                <div className={`text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300 bg-gradient-to-r ${getComplexityColorClass(details.bestCase)}`}>
                   {details.bestCase}
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">Worst:</span>
-                <div className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300" style={{
-                  background: getComplexityColor(details.worstCase)
-                }}>
+                <span className="text-sm font-medium text-gray-200">Worst:</span>
+                <div className={`text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300 bg-gradient-to-r ${getComplexityColorClass(details.worstCase)}`}>
                   {details.worstCase}
                 </div>
               </div>
@@ -458,32 +454,30 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           </div>
 
           {/* Space Complexity - Compact */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="glass-card p-4">
             <div className="flex items-center gap-2 mb-3">
-              <HardDrive className="text-green-500" size={18} />
-              <h4 className="font-semibold text-gray-800">Space Complexity</h4>
+              <HardDrive className="text-accent-500" size={18} />
+              <h4 className="font-semibold text-white">Space Complexity</h4>
             </div>
 
             <div className="text-center">
-              <div className="text-lg px-4 py-2 rounded-full text-white font-mono font-bold inline-block shadow-lg border border-gray-300" style={{
-                background: getComplexityColor(details.spaceComplexity)
-              }}>
+              <div className={`text-lg px-4 py-2 rounded-full text-white font-mono font-bold inline-block shadow-lg border border-gray-300 bg-gradient-to-r ${getComplexityColorClass(details.spaceComplexity)}`}>
                 {details.spaceComplexity}
               </div>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl">
-            <h4 className="font-semibold text-gray-800 mb-2">Quick Stats</h4>
+          <div className="glass-card p-4">
+            <h4 className="font-semibold text-white mb-2">Quick Stats</h4>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="text-center p-2 bg-white rounded-lg">
-                <div className="font-semibold text-gray-800">Category</div>
-                <div className="text-gray-600">{details.category}</div>
+              <div className="text-center p-2 glass-card">
+                <div className="font-semibold text-white">Category</div>
+                <div className="text-gray-200">{details.category}</div>
               </div>
-              <div className="text-center p-2 bg-white rounded-lg">
-                <div className="font-semibold text-gray-800">Difficulty</div>
-                <div className="text-gray-600">
+              <div className="text-center p-2 glass-card">
+                <div className="font-semibold text-white">Difficulty</div>
+                <div className="text-gray-200">
                   {getDifficulty(algorithm)}
                 </div>
               </div>
@@ -493,25 +487,25 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
       </div>
 
       {/* Color Legend - Adaptive based on category */}
-      <div className="mt-6 bg-gradient-to-r from-gray-50 to-blue-50 p-4 rounded-xl">
-        <h4 className="font-semibold text-gray-800 mb-3 text-center">Visualization Colors</h4>
-        <div className="flex justify-center gap-4 text-xs flex-wrap">
+      <div className="mt-6 glass-card p-4">
+        <h4 className="font-semibold text-white mb-3 text-center">Visualization Colors</h4>
+        <div className="flex justify-center gap-4 text-xs flex-wrap text-gray-200">
           {details.category === 'Sorting' && (
             <>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                <div className="w-3 h-3 rounded bg-indigo-400"></div>
                 <span>Default</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                <div className="w-3 h-3 rounded bg-amber-500"></div>
                 <span>Comparing</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                <div className="w-3 h-3 rounded bg-red-500"></div>
                 <span>Swapping</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                <div className="w-3 h-3 rounded bg-emerald-500"></div>
                 <span>Sorted</span>
               </div>
             </>
@@ -519,23 +513,23 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           {details.category === 'Pathfinding' && (
             <>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                <div className="w-3 h-3 rounded bg-emerald-500"></div>
                 <span>Start</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                <div className="w-3 h-3 rounded bg-red-500"></div>
                 <span>End</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#1f2937' }}></div>
+                <div className="w-3 h-3 rounded bg-gray-800"></div>
                 <span>Wall</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#93c5fd' }}></div>
+                <div className="w-3 h-3 rounded bg-blue-300"></div>
                 <span>Visited</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
+                <div className="w-3 h-3 rounded bg-amber-400"></div>
                 <span>Path</span>
               </div>
             </>
@@ -543,15 +537,15 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           {details.category === 'Searching' && (
             <>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                <div className="w-3 h-3 rounded bg-indigo-400"></div>
                 <span>Default</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                <div className="w-3 h-3 rounded bg-amber-500"></div>
                 <span>Checking</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                <div className="w-3 h-3 rounded bg-emerald-500"></div>
                 <span>Found</span>
               </div>
             </>
@@ -559,11 +553,11 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           {details.category === 'Trees' && (
             <>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                <div className="w-3 h-3 rounded bg-indigo-400"></div>
                 <span>Normal</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                <div className="w-3 h-3 rounded bg-amber-500"></div>
                 <span>Highlighted</span>
               </div>
             </>
