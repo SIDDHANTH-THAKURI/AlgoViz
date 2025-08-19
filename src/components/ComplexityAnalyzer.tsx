@@ -34,42 +34,47 @@ export default function ComplexityAnalyzer() {
     }
   };
 
-  return (
-    <>
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg focus:outline-none"
-      >
-        <FileUp />
-      </button>
+    return (
+      <>
+        <button
+          onClick={() => setOpen(!open)}
+          aria-label="Open complexity analyzer"
+          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg transition-transform hover:scale-105 focus:outline-none"
+        >
+          <FileUp className="h-6 w-6" />
+        </button>
 
-      {open && (
-        <div className="fixed bottom-20 right-4 w-80 bg-white rounded-lg shadow-xl p-4 text-gray-800">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="font-semibold">Analyze Code</h2>
-            <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-700">
-              <X size={16} />
-            </button>
-          </div>
-
-          <input
-            type="file"
-            accept=".py,.js,.ts,.java,.cpp,.cc,.cxx,.c++"
-            onChange={handleFile}
-            className="mb-3 w-full"
-          />
-
-          {loading && <p className="text-sm">Analyzing...</p>}
-
-          {result && !loading && (
-            <div className="bg-gray-100 rounded p-2 text-sm">
-              <p className="font-medium">Estimated: {result.complexity}</p>
-              <p>Loop depth: {result.depth}</p>
-              <p>Recursion: {result.recursion ? 'Yes' : 'No'}</p>
+        {open && (
+          <div className="fixed bottom-24 right-6 z-50 w-80 rounded-lg border border-gray-200 bg-white/95 p-4 text-gray-800 shadow-xl backdrop-blur">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-gray-700">Analyze Code</h2>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-gray-500 transition-colors hover:text-gray-700"
+                aria-label="Close analyzer"
+              >
+                <X size={16} />
+              </button>
             </div>
-          )}
-        </div>
-      )}
-    </>
-  );
-}
+
+            <input
+              type="file"
+              accept=".py,.js,.ts,.java,.cpp,.cc,.cxx,.c++"
+              onChange={handleFile}
+              className="mb-3 w-full text-sm"
+            />
+
+            {loading && <p className="text-sm text-gray-600">Analyzing...</p>}
+
+            {result && !loading && (
+              <div className="rounded bg-gray-50 p-2 text-sm text-gray-700">
+                <p className="font-medium">Estimated: {result.complexity}</p>
+                <p>Loop depth: {result.depth}</p>
+                <p>Recursion: {result.recursion ? 'Yes' : 'No'}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </>
+    );
+  }
