@@ -84,7 +84,14 @@ function Controls({
                 value={searchTarget}
                 onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
                 disabled={isDisabled}
-                className="w-24 px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                style={{
+                  width: '6rem', /* w-24 */
+                  padding: '0.5rem 0.75rem', /* px-3 py-2 */
+                  borderRadius: '0.5rem', /* rounded-lg */
+                  border: '1px solid rgba(255, 255, 255, 0.2)', /* border-white/20 */
+                  backgroundColor: 'rgba(0, 238, 255, 0.52)', /* bg-white/5 */
+                  color: 'white', /* text-white */
+                }}
               />
             </div>
           )}
