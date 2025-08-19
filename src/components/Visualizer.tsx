@@ -80,7 +80,7 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
       // Add value labels for smaller arrays
       if (currentArray.length <= 25) {
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px Inter';
+        ctx.font = 'bold 12px "Comic Sans MS", "Comic Sans", cursive';
         ctx.textAlign = 'center';
         ctx.fillText(value.toString(), x + barWidth / 2, canvas.height - 8);
       }
