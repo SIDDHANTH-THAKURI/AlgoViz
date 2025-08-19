@@ -151,26 +151,36 @@ const AlgorithmCategorySelector = ({
           className="mb-20"
         >
           <h3 className="text-2xl font-bold text-white text-center mb-8">Algorithm Categories</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map(({ value, label, icon, description, gradient, count }, index) => (
-              <motion.button
-                key={value}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onClick={() => onCategoryChange(value)}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                aria-pressed={selectedCategory === value}
-                className={`category-card ${selectedCategory === value ? 'active' : ''}`}
-              >
-                <div className={`category-icon ${value === 'sorting' ? 'red' : value === 'pathfinding' ? 'green' : value === 'searching' ? 'blue' : 'purple'}`}>{icon}</div>
-                <div>
-                  <div className="label mb-1">{label}</div>
-                  <div className="desc">{description}</div>
-                </div>
-              </motion.button>
-            ))}
+          <div className="glass-card p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {categories.map(({ value, label, icon, description, gradient }, index) => (
+                <motion.button
+                  key={value}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  onClick={() => onCategoryChange(value)}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-pressed={selectedCategory === value}
+                  className={`glass-card flex items-center gap-4 p-4 h-32 transition-all duration-300 ${
+                    selectedCategory === value
+                      ? 'border-blue-400/50 shadow-lg shadow-blue-500/20'
+                      : 'hover:border-white/20 hover:bg-white/10'
+                  }`}
+                >
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-r ${gradient} text-white shadow-lg flex-shrink-0`}
+                  >
+                    {icon}
+                  </div>
+                  <div className="text-left">
+                    <div className="text-lg font-bold text-white mb-1">{label}</div>
+                    <div className="text-sm text-gray-300">{description}</div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
           </div>
         </motion.div>
 
