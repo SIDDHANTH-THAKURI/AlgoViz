@@ -508,80 +508,84 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
       {/* Color Legend - Adaptive based on category */}
       <div className="mt-6 glass-card p-4">
         <h4 className="font-semibold text-white mb-3 text-center">Visualization Colors</h4>
-        <div className="flex justify-center gap-4 text-xs flex-wrap">
-          {details.category === 'Sorting' && (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
-                <span>Default</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                <span>Comparing</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-                <span>Swapping</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                <span>Sorted</span>
-              </div>
-            </>
-          )}
-          {details.category === 'Pathfinding' && (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                <span>Start</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-                <span>End</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#1f2937' }}></div>
-                <span>Wall</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#93c5fd' }}></div>
-                <span>Visited</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
-                <span>Path</span>
-              </div>
-            </>
-          )}
-          {details.category === 'Searching' && (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
-                <span>Default</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                <span>Checking</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                <span>Found</span>
-              </div>
-            </>
-          )}
-          {details.category === 'Trees' && (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
-                <span>Normal</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                <span>Highlighted</span>
-              </div>
-            </>
-          )}
-        </div>
+        {['Sorting', 'Pathfinding', 'Searching', 'Trees'].includes(details.category) ? (
+          <div className="flex justify-center gap-4 text-xs flex-wrap text-gray-200">
+            {details.category === 'Sorting' && (
+              <>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                  <span>Default</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                  <span>Comparing</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                  <span>Swapping</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                  <span>Sorted</span>
+                </div>
+              </>
+            )}
+            {details.category === 'Pathfinding' && (
+              <>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                  <span>Start</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                  <span>End</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#1f2937' }}></div>
+                  <span>Wall</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#93c5fd' }}></div>
+                  <span>Visited</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
+                  <span>Path</span>
+                </div>
+              </>
+            )}
+            {details.category === 'Searching' && (
+              <>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                  <span>Default</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                  <span>Checking</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                  <span>Found</span>
+                </div>
+              </>
+            )}
+            {details.category === 'Trees' && (
+              <>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#667eea' }}></div>
+                  <span>Normal</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                  <span>Highlighted</span>
+                </div>
+              </>
+            )}
+          </div>
+        ) : (
+          <p className="text-center text-gray-200 text-sm">No color information available.</p>
+        )}
       </div>
     </motion.div>
   );

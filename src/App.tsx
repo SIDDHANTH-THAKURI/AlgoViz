@@ -75,7 +75,7 @@ function Controls({
         <div className="button-row flex flex-wrap justify-center gap-4">
           {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
             <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg shadow-inner">
-              <label htmlFor="target" className="text-gray-300 font-semibold">
+              <label htmlFor="target" className="text-gray-200 font-semibold">
                 {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
               </label>
               <input
@@ -84,7 +84,7 @@ function Controls({
                 value={searchTarget}
                 onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
                 disabled={isDisabled}
-                className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-24 px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
           )}
