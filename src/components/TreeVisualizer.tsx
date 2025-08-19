@@ -95,14 +95,19 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
 
   console.log('Rendering tree with nodes:', nodes.length, 'edges:', edges.length);
 
+  const NODE_COLORS = {
+    normal: 'bg-gradient-to-r from-blue-500 to-purple-600',
+    highlight: 'bg-gradient-to-r from-yellow-400 to-orange-500'
+  } as const;
+
   return (
     <div className="glass-card p-6">
       <div className="mb-4 text-center">
         <h3 className="text-xl font-bold mb-2">Binary Search Tree</h3>
         <p className="text-sm opacity-80">Nodes: {nodes.length} | Highlighted: {highlightedNodes.length}</p>
       </div>
-      
-      <div className="relative tree-surface overflow-hidden" style={{ height: '500px', width: '800px' }}>
+
+      <div className="canvas-card backdrop-blur-md tree-surface overflow-hidden mx-auto w-full max-w-[800px]" style={{ height: '500px' }}>
         {/* SVG for edges */}
         <svg width="100%" height="100%" className="absolute inset-0" style={{ zIndex: 1 }}>
           {edges.map((edge, index) => (
@@ -125,17 +130,18 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
         {/* Nodes */}
         {nodes.map((node, index) => {
           const isHighlighted = highlightedNodes.includes(parseInt(node.id)) || highlightedNodes.includes(node.id as any);
-          
+
           return (
             <motion.div
               key={`node-${node.id}`}
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ 
-                scale: isHighlighted ? 1.3 : 1, 
-                opacity: 1 
+              animate={{
+                scale: isHighlighted ? 1.3 : 1,
+                opacity: 1
               }}
-              transition={{ 
-                duration: 0.5, 
+              whileHover={{ scale: 1.05, y: -2 }}
+              transition={{
+                duration: 0.5,
                 delay: index * 0.1,
                 type: "spring",
                 stiffness: 200
@@ -146,6 +152,9 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
                 left: node.x - 25,
                 top: node.y - 25,
                 zIndex: 2,
+                background: isHighlighted
+                  ? 'linear-gradient(to right, #facc15, #fb923c)'
+                  : 'linear-gradient(to right, #3b82f6, #8b5cf6)'
               }}
             >
               {node.value}
@@ -157,11 +166,11 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
       <div className="mt-6 glass-card p-4">
         <div className="flex justify-center gap-8 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+            <div className={`w-5 h-5 ${NODE_COLORS.normal} rounded-full`}></div>
             <span className="font-medium">Normal Node</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+            <div className={`w-5 h-5 ${NODE_COLORS.highlight} rounded-full`}></div>
             <span className="font-medium">Active/Highlighted</span>
           </div>
         </div>

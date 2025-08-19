@@ -147,7 +147,7 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           className="glass-card p-8 max-w-6xl mx-auto"
         >
           {/* Visualization Header */}
-          <div className="viz-toolbar">
+          <div className="viz-toolbar glass-card backdrop-blur-md">
             <div className="flex items-center gap-3">
               <BarChart3 size={22} className="text-purple-600" />
               <h2 className="text-2xl font-extrabold text-gray-800">Live Visualization</h2>
@@ -158,7 +158,7 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           {/* Canvas Container */}
           <div className="relative mb-8">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl blur-xl" />
-            <div className="canvas-container relative">
+            <div className="canvas-card backdrop-blur-md canvas-container relative mx-auto w-full max-w-[1000px]">
               <canvas
                 ref={canvasRef}
                 width={1000}
