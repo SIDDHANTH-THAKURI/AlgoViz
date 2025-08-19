@@ -1,4 +1,3 @@
-import React from 'react';
 import type { VisualizationState } from '../types';
 
 interface DebugInfoProps {

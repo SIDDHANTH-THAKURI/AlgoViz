@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Play, Pause, Info } from 'lucide-react';
+import { BarChart3, Info } from 'lucide-react';
 import type { VisualizationState } from '../types';
 
 interface VisualizerProps {
