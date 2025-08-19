@@ -64,72 +64,63 @@ function Controls({
   const isDisabled = isPlaying && !isPaused;
 
   return (
-    <div className="glass-card p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="space-y-6"
-      >
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
-            <div className="flex items-center gap-2">
-              <label htmlFor="target" className="text-gray-700 font-semibold">
-                {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
-              </label>
-              <input
-                id="target"
-                type="number"
-                value={searchTarget}
-                onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
-                disabled={isDisabled}
-                className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="glass-card p-6 space-y-6"
+    >
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
+          <div className="flex items-center gap-2">
+            <label htmlFor="target" className="text-gray-700 font-semibold">
+              {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
+            </label>
+            <input
+              id="target"
+              type="number"
+              value={searchTarget}
+              onChange={(e) => onSearchTargetChange(parseInt(e.target.value) || 0)}
+              disabled={isDisabled}
+              className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        )}
 
-          <button
-            onClick={onGenerateData}
-            disabled={isDisabled}
-            className="btn-secondary flex items-center gap-3"
-          >
-            <span>🔄</span>
+        <button
+          onClick={onGenerateData}
+          disabled={isDisabled}
+          className="btn btn-secondary"
+        >
+          <span>🔄</span>
+          <span className="font-semibold">
+            Generate New {selectedCategory === 'pathfinding' ? 'Grid' :
+              selectedCategory === 'trees' ? 'Tree' : 'Data'}
+          </span>
+        </button>
+
+        {!isPlaying ? (
+          <button onClick={onPlay} className="btn btn-primary">
+            <span>▶️</span>
             <span className="font-semibold">
-              Generate New {selectedCategory === 'pathfinding' ? 'Grid' :
-                selectedCategory === 'trees' ? 'Tree' : 'Data'}
+              {isPaused ? 'Resume' : 'Start Visualization'}
             </span>
           </button>
-
-          {!isPlaying ? (
-            <button
-              onClick={onPlay}
-              className="btn-primary flex items-center gap-3"
-            >
-              <span>▶️</span>
-              <span className="font-semibold">
-                {isPaused ? 'Resume' : 'Start Visualization'}
-              </span>
-            </button>
-          ) : (
-            <button
-              onClick={handlePause}
-              className="btn-warning flex items-center gap-3"
-            >
-              <span>⏸️</span>
-              <span className="font-semibold">Pause</span>
-            </button>
-          )}
-
-          <button
-            onClick={handleReset}
-            className="btn-danger flex items-center gap-3"
-          >
-            <span>🔄</span>
-            <span className="font-semibold">Reset</span>
+        ) : (
+          <button onClick={handlePause} className="btn btn-warning">
+            <span>⏸️</span>
+            <span className="font-semibold">Pause</span>
           </button>
-        </div>
+        )}
 
-        <div className="flex items-center justify-center gap-6 bg-white/50 rounded-2xl p-4 backdrop-blur-sm">
+        <button onClick={handleReset} className="btn btn-danger">
+          <span>🔄</span>
+          <span className="font-semibold">Reset</span>
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-6 sm:flex-row">
+        <div className="flex-1 flex items-center justify-center gap-6 bg-white/50 rounded-2xl p-4 backdrop-blur-sm">
           <label htmlFor="speed" className="text-gray-700 font-semibold text-lg">
             Speed:
           </label>
@@ -154,7 +145,7 @@ function Controls({
         </div>
 
         {visualizationState.steps.length > 0 && (
-          <div className="text-center bg-white/70 rounded-xl p-4 backdrop-blur-sm">
+          <div className="flex-1 text-center bg-white/70 rounded-xl p-4 backdrop-blur-sm">
             <div className="text-lg font-semibold text-gray-700 mb-2">
               {isPlaying ? 'Running...' : isPaused ? 'Paused' : 'Ready'}
             </div>
@@ -163,8 +154,8 @@ function Controls({
             </div>
           </div>
         )}
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
 
