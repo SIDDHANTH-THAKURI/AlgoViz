@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Code, Zap, Sparkles } from 'lucide-react';
+import { Code, Zap, Sparkles, RefreshCw, Play, Pause, RotateCcw } from 'lucide-react';
 import Header from './components/Header';
 import Visualizer from './components/Visualizer';
 import GridVisualizer from './components/GridVisualizer';
@@ -89,39 +89,56 @@ function Controls({
             </div>
           )}
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onGenerateData}
             disabled={isDisabled}
-            className="btn-secondary flex items-center gap-3"
+            className="btn btn-secondary flex items-center gap-2"
           >
-            <span>🔄</span>
+            <RefreshCw className="w-5 h-5" />
             <span className="font-semibold">
               Generate New {selectedCategory === 'pathfinding' ? 'Grid' :
                 selectedCategory === 'trees' ? 'Tree' : 'Data'}
             </span>
-          </button>
+          </motion.button>
 
           {!isPlaying ? (
-            <button onClick={onPlay} className="btn-primary flex items-center gap-3">
-              <span>▶️</span>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onPlay}
+              className="btn btn-primary flex items-center gap-2"
+            >
+              <Play className="w-5 h-5" />
               <span className="font-semibold">{isPaused ? 'Resume' : 'Start Visualization'}</span>
-            </button>
+            </motion.button>
           ) : (
-            <button onClick={handlePause} className="btn-warning flex-1 flex items-center justify-center gap-2">
-              <span>⏸️</span>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handlePause}
+              className="btn btn-warning flex items-center gap-2"
+            >
+              <Pause className="w-5 h-5" />
               <span className="font-semibold">Pause</span>
-            </button>
+            </motion.button>
           )}
 
-          <button onClick={handleReset} className="btn-danger flex-1 flex items-center justify-center gap-2">
-            <span>🔄</span>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleReset}
+            className="btn btn-danger flex items-center gap-2"
+          >
+            <RotateCcw className="w-5 h-5" />
             <span className="font-semibold">Reset</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Speed row */}
-        <div className="controls-row bg-white/10 rounded-xl p-4 shadow-inner flex items-center justify-between gap-4">
-          <div className="speed-group flex items-center gap-4 flex-1">
+        <div className="controls-row bg-white/10 rounded-xl p-4 shadow-inner flex flex-col items-center gap-4">
+          <div className="flex items-center justify-center gap-3">
             <label htmlFor="speed" className="speed-label text-white font-semibold text-lg">Speed:</label>
             <span className="speed-endpoint text-gray-300 text-sm">Slow</span>
             <input
@@ -131,12 +148,11 @@ function Controls({
               max="100"
               value={speed}
               onChange={(e) => onSpeedChange(parseInt(e.target.value))}
-              className="speed-slider flex-1 h-2 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg appearance-none cursor-pointer"
+              className="speed-slider w-56 h-2 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg appearance-none cursor-pointer"
             />
             <span className="speed-endpoint text-gray-300 text-sm">Fast</span>
+            <div className="speed-percent text-white font-bold text-xl w-16 text-center">{speed}%</div>
           </div>
-
-          <div className="speed-percent text-white font-bold text-xl w-16 text-center">{speed}%</div>
         </div>
 
         {/* Status panel */}
