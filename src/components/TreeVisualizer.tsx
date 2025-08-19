@@ -6,7 +6,14 @@ interface TreeVisualizerProps {
   highlightedNodes?: number[];
 }
 
+interface PositionedNode extends TreeNode {
+  x: number;
+  y: number;
+}
+
 const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) => {
+  console.log('TreeVisualizer rendering with:', { tree: tree?.value, highlightedNodes });
+
   if (!tree) {
     return (
       <div className="glass-card p-8">
@@ -19,100 +26,126 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
     );
   }
 
-  // Calculate positions for nodes
+  // Safe deep copy function that handles null values
+  const deepCopyTree = (node: TreeNode | null): TreeNode | null => {
+    if (!node) return null;
+    return {
+      value: node.value,
+      id: node.id,
+      left: deepCopyTree(node.left || null),
+      right: deepCopyTree(node.right || null),
+      x: node.x,
+      y: node.y,
+      highlighted: node.highlighted
+    };
+  };
+
+  // Calculate positions for nodes with better spacing
   const calculatePositions = (node: TreeNode | null, x: number, y: number, spacing: number): void => {
     if (!node) return;
     
-    node.x = x;
-    node.y = y;
+    (node as any).x = x;
+    (node as any).y = y;
     
     if (node.left) {
-      calculatePositions(node.left, x - spacing, y + 80, spacing / 2);
+      calculatePositions(node.left, x - spacing, y + 80, Math.max(spacing * 0.7, 40));
     }
     if (node.right) {
-      calculatePositions(node.right, x + spacing, y + 80, spacing / 2);
+      calculatePositions(node.right, x + spacing, y + 80, Math.max(spacing * 0.7, 40));
     }
   };
 
-  // Create a copy to avoid mutating the original
-  const treeCopy = JSON.parse(JSON.stringify(tree));
-  calculatePositions(treeCopy, 300, 50, 120);
+  // Create a safe copy and calculate positions
+  const treeCopy = deepCopyTree(tree);
+  if (treeCopy) {
+    calculatePositions(treeCopy, 400, 70, 120); // Start more centered with wider spacing
+  }
 
   // Collect all nodes for rendering
-  const collectNodes = (node: TreeNode | null): TreeNode[] => {
+  const collectNodes = (node: TreeNode | null): PositionedNode[] => {
     if (!node) return [];
-    return [node, ...collectNodes(node.left || null), ...collectNodes(node.right || null)];
+    const positionedNode = node as PositionedNode;
+    return [
+      positionedNode, 
+      ...collectNodes(node.left || null), 
+      ...collectNodes(node.right || null)
+    ];
   };
 
   // Collect all edges for rendering
-  const collectEdges = (node: TreeNode | null): Array<{from: TreeNode, to: TreeNode}> => {
+  const collectEdges = (node: TreeNode | null): Array<{from: PositionedNode, to: PositionedNode}> => {
     if (!node) return [];
-    const edges: Array<{from: TreeNode, to: TreeNode}> = [];
+    const edges: Array<{from: PositionedNode, to: PositionedNode}> = [];
+    const positionedNode = node as PositionedNode;
     
     if (node.left) {
-      edges.push({ from: node, to: node.left });
+      edges.push({ from: positionedNode, to: node.left as PositionedNode });
       edges.push(...collectEdges(node.left));
     }
     if (node.right) {
-      edges.push({ from: node, to: node.right });
+      edges.push({ from: positionedNode, to: node.right as PositionedNode });
       edges.push(...collectEdges(node.right));
     }
     
     return edges;
   };
 
-  const nodes = collectNodes(treeCopy);
-  const edges = collectEdges(treeCopy);
+  const nodes = treeCopy ? collectNodes(treeCopy) : [];
+  const edges = treeCopy ? collectEdges(treeCopy) : [];
+
+  console.log('Rendering tree with nodes:', nodes.length, 'edges:', edges.length);
 
   return (
     <div className="glass-card p-6">
-      <div className="relative bg-gray-50 rounded-lg" style={{ height: '400px', width: '600px', margin: '0 auto' }}>
-        <svg width="100%" height="100%" className="absolute inset-0">
-          {/* Render edges */}
+      <div className="mb-4 text-center">
+        <h3 className="text-xl font-bold mb-2">Binary Search Tree</h3>
+        <p className="text-sm opacity-80">Nodes: {nodes.length} | Highlighted: {highlightedNodes.length}</p>
+      </div>
+      
+      <div className="relative tree-surface overflow-hidden" style={{ height: '500px', width: '800px' }}>
+        {/* SVG for edges */}
+        <svg width="100%" height="100%" className="absolute inset-0" style={{ zIndex: 1 }}>
           {edges.map((edge, index) => (
             <motion.line
-              key={`edge-${index}`}
+              key={`edge-${edge.from.id}-${edge.to.id}`}
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               x1={edge.from.x}
-              y1={edge.from.y! + 20}
+              y1={edge.from.y + 25}
               x2={edge.to.x}
-              y2={edge.to.y! + 20}
-              stroke="#6B7280"
-              strokeWidth="2"
+              y2={edge.to.y + 25}
+              stroke="#4B5563"
+              strokeWidth="3"
               className="drop-shadow-sm"
             />
           ))}
         </svg>
 
-        {/* Render nodes */}
+        {/* Nodes */}
         {nodes.map((node, index) => {
-          const isHighlighted = highlightedNodes.includes(parseInt(node.id));
+          const isHighlighted = highlightedNodes.includes(parseInt(node.id)) || highlightedNodes.includes(node.id as any);
           
           return (
             <motion.div
-              key={node.id}
+              key={`node-${node.id}`}
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+              animate={{ 
+                scale: isHighlighted ? 1.3 : 1, 
+                opacity: 1 
+              }}
               transition={{ 
                 duration: 0.5, 
                 delay: index * 0.1,
                 type: "spring",
-                stiffness: 300
+                stiffness: 200
               }}
-              className={`
-                absolute w-10 h-10 rounded-full flex items-center justify-center
-                font-bold text-white text-sm shadow-lg transform -translate-x-5 -translate-y-5
-                transition-all duration-300
-                ${isHighlighted 
-                  ? 'bg-gradient-to-r from-yellow-400 to-orange-500 scale-125 shadow-xl ring-4 ring-yellow-300' 
-                  : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110'
-                }
-              `}
+              className={`tree-node ${isHighlighted ? 'highlight' : ''}`}
               style={{
-                left: node.x,
-                top: node.y
+                position: 'absolute',
+                left: node.x - 25,
+                top: node.y - 25,
+                zIndex: 2,
               }}
             >
               {node.value}
@@ -121,16 +154,26 @@ const TreeVisualizer = ({ tree, highlightedNodes = [] }: TreeVisualizerProps) =>
         })}
       </div>
 
-      <div className="mt-4 text-center">
-        <div className="flex justify-center gap-6 text-sm">
+      <div className="mt-6 glass-card p-4">
+        <div className="flex justify-center gap-8 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
-            <span>Normal Node</span>
+            <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+            <span className="font-medium">Normal Node</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
-            <span>Highlighted Node</span>
+            <div className="w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+            <span className="font-medium">Active/Highlighted</span>
           </div>
+        </div>
+        <div className="mt-3 text-center">
+          <div className="text-xs opacity-80">
+            Tree Structure: {nodes.length} nodes total
+          </div>
+          {highlightedNodes.length > 0 && (
+            <div className="text-xs font-medium mt-1" style={{ color: '#f59e0b' }}>
+              Currently highlighting: {highlightedNodes.join(', ')}
+            </div>
+          )}
         </div>
       </div>
     </div>

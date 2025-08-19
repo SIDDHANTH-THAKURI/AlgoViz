@@ -23,8 +23,15 @@ const AlgorithmSelector = ({ selectedAlgorithm, onAlgorithmChange }: AlgorithmSe
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">Choose Your Algorithm</h2>
-        <p className="text-gray-600 text-center mb-8">Select a sorting algorithm to visualize</p>
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <BarChart3 size={32} className="text-cyan-400" />
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+            Sorting Algorithms
+          </h2>
+        </div>
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          Explore various sorting algorithms and watch them in action
+        </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {algorithms.map(({ value, label, icon, complexity }, index) => (
@@ -34,19 +41,11 @@ const AlgorithmSelector = ({ selectedAlgorithm, onAlgorithmChange }: AlgorithmSe
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               onClick={() => onAlgorithmChange(value)}
-              className={`algorithm-btn relative group ${
-                selectedAlgorithm === value ? 'active' : ''
-              }`}
+              className={`algorithm-card relative group ${selectedAlgorithm === value ? 'active' : ''}`}
             >
-              <div className="flex flex-col items-center gap-3 relative z-10">
-                <div className="text-current">
-                  {icon}
-                </div>
-                <div className="text-center">
-                  <div className="font-semibold text-sm">{label}</div>
-                  <div className="text-xs opacity-75 mt-1">{complexity}</div>
-                </div>
-              </div>
+              <div className="algo-icon">{icon}</div>
+              <div className="algo-title">{label}</div>
+              <div className="algo-meta">{complexity}</div>
             </motion.button>
           ))}
         </div>

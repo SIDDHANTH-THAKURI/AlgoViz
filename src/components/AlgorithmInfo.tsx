@@ -14,7 +14,8 @@ import {
   Route,
   Eye,
   Binary,
-  TreePine
+  TreePine,
+  Network
 } from 'lucide-react';
 import type { AlgorithmType } from '../types';
 
@@ -192,6 +193,51 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
       color: 'from-purple-500 to-violet-500',
       category: 'Trees',
       spaceComplexity: 'O(log n)'
+    },
+    // Graph algorithms (placeholder)
+    'graph-bfs': {
+      howItWorks: "Explores graph nodes level by level using a queue data structure.",
+      bestCase: "O(V + E)",
+      worstCase: "O(V + E)",
+      optimal: true,
+      complete: true,
+      icon: <GitBranch size={20} />,
+      color: 'from-blue-500 to-cyan-500',
+      category: 'Graphs',
+      spaceComplexity: 'O(V)'
+    },
+    'graph-dfs': {
+      howItWorks: "Explores graph nodes depth-first using a stack data structure.",
+      bestCase: "O(V + E)",
+      worstCase: "O(V + E)",
+      optimal: false,
+      complete: true,
+      icon: <GitBranch size={20} />,
+      color: 'from-orange-500 to-red-500',
+      category: 'Graphs',
+      spaceComplexity: 'O(V)'
+    },
+    'mst-kruskal': {
+      howItWorks: "Finds minimum spanning tree by sorting edges and using union-find data structure.",
+      bestCase: "O(E log E)",
+      worstCase: "O(E log E)",
+      optimal: true,
+      complete: true,
+      icon: <Network size={20} />,
+      color: 'from-green-500 to-teal-500',
+      category: 'Graphs',
+      spaceComplexity: 'O(V)'
+    },
+    'mst-prim': {
+      howItWorks: "Finds minimum spanning tree by growing tree from arbitrary starting vertex.",
+      bestCase: "O(E log V)",
+      worstCase: "O(E log V)",
+      optimal: true,
+      complete: true,
+      icon: <Network size={20} />,
+      color: 'from-purple-500 to-pink-500',
+      category: 'Graphs',
+      spaceComplexity: 'O(V)'
     }
   } as const;
 
@@ -297,8 +343,8 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           {details.icon}
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">{getAlgorithmName(algorithm)}</h2>
-          <p className="text-gray-600 text-sm">{details.category} Algorithm Analysis</p>
+          <h2 className="text-2xl font-bold">{getAlgorithmName(algorithm)}</h2>
+          <p className="opacity-80 text-sm">{details.category} Algorithm Analysis</p>
         </div>
       </div>
 
@@ -306,17 +352,17 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Left Column - Description & How it works */}
         <div className="space-y-4">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl">
-            <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-              <Info size={16} className="text-blue-600" />
+          <div className="glass-card p-4">
+            <h4 className="font-semibold mb-2 flex items-center gap-2">
+              <Info size={16} />
               How It Works
             </h4>
-            <p className="text-gray-700 text-sm leading-relaxed">{details.howItWorks}</p>
+            <p className="text-sm leading-relaxed opacity-90">{details.howItWorks}</p>
           </div>
 
           {/* Properties - Adaptive based on algorithm type */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-            <h4 className="font-semibold text-gray-800 mb-3">Properties</h4>
+          <div className="glass-card p-4">
+            <h4 className="font-semibold mb-3">Properties</h4>
             <div className="flex gap-6 flex-wrap">
               {details.category === 'Sorting' && (
                 <>

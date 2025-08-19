@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Eye } from 'lucide-react';
+import { BarChart3, Play, Pause, Info } from 'lucide-react';
 import type { VisualizationState } from '../types';
 
 interface VisualizerProps {
@@ -13,17 +13,16 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
   const [currentMessage, setCurrentMessage] = useState<string>('Ready to visualize!');
 
   const getBarColor = (index: number, step = visualizationState.steps[visualizationState.currentStep]) => {
-    if (!step) return '#667eea';
+    if (!step) return '#3b82f6';
 
     if (step.sorted?.includes(index)) return '#10b981';
     if (step.comparing?.includes(index)) return '#f59e0b';
     if (step.swapping?.includes(index)) return '#ef4444';
     if (step.pivot === index) return '#8b5cf6';
 
-    return '#667eea';
+    return '#3b82f6';
   };
 
-  // Helper function to draw rounded rectangle (compatible with all browsers)
   const drawRoundedRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) => {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -43,8 +42,8 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear canvas with subtle background
-    ctx.fillStyle = '#f8fafc';
+    // Clear canvas with dark background
+    ctx.fillStyle = '#0f172a';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const barWidth = Math.max(8, (canvas.width - 40) / currentArray.length);
@@ -68,28 +67,22 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
       drawRoundedRect(ctx, x + 1, y, barWidth - 2, barHeight, 4);
       ctx.fill();
 
-      // Add subtle border
-      ctx.strokeStyle = baseColor;
-      ctx.lineWidth = 1;
-      drawRoundedRect(ctx, x + 1, y, barWidth - 2, barHeight, 4);
-      ctx.stroke();
-
-      // Add value labels for smaller arrays
-      if (currentArray.length <= 25) {
-        ctx.fillStyle = '#374151';
-        ctx.font = '11px Inter, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(value.toString(), x + barWidth / 2, canvas.height - 10);
-      }
-
       // Add glow effect for active elements
       if (step?.comparing?.includes(index) || step?.swapping?.includes(index) || step?.pivot === index) {
         ctx.shadowColor = baseColor;
-        ctx.shadowBlur = 8;
-        ctx.fillStyle = baseColor + '30';
-        drawRoundedRect(ctx, x - 1, y - 1, barWidth, barHeight + 2, 5);
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = baseColor + '40';
+        drawRoundedRect(ctx, x - 2, y - 2, barWidth + 2, barHeight + 4, 6);
         ctx.fill();
         ctx.shadowBlur = 0;
+      }
+
+      // Add value labels for smaller arrays
+      if (currentArray.length <= 25) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText(value.toString(), x + barWidth / 2, canvas.height - 8);
       }
     });
 
@@ -118,82 +111,127 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
   }, [visualizationState.currentStep, visualizationState.steps]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
-      className="glass-card p-8"
-    >
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Eye size={24} className="text-purple-600" />
-          <h2 className="text-3xl font-bold text-gray-800">Live Visualization</h2>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span>Array Size: {array.length}</span>
-        </div>
-      </div>
-
-      <div className="canvas-container mb-6">
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={400}
-          className="w-full h-auto max-w-full border border-gray-200 rounded-lg"
-          style={{ maxHeight: '400px' }}
+    <section className="py-16 relative">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
         />
       </div>
-      
-      {currentMessage && (
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section Header */}
         <motion.div
-          key={currentMessage}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-xl text-center mb-6"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
         >
-          <div className="font-semibold text-lg">{currentMessage}</div>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <BarChart3 size={32} className="text-cyan-400" />
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+              Live Visualization
+            </h2>
+          </div>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Watch algorithms work in real-time with beautiful animations
+          </p>
         </motion.div>
-      )}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-        <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#667eea' }}></div>
-          <span className="font-medium">Default</span>
-        </div>
-        <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-          <span className="font-medium">Comparing</span>
-        </div>
-        <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-          <span className="font-medium">Swapping</span>
-        </div>
-        <div className="flex items-center gap-2 bg-white/70 p-3 rounded-lg">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#10b981' }}></div>
-          <span className="font-medium">Sorted</span>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="glass-card p-8 max-w-6xl mx-auto"
+        >
+          {/* Visualization Header */}
+          <div className="viz-toolbar">
+            <div className="flex items-center gap-3">
+              <BarChart3 size={22} className="text-purple-600" />
+              <h2 className="text-2xl font-extrabold text-gray-800">Live Visualization</h2>
+            </div>
+            <span className="viz-badge">Array: {array.length}</span>
+          </div>
+
+          {/* Canvas Container */}
+          <div className="relative mb-8">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-2xl blur-xl" />
+            <div className="canvas-container relative">
+              <canvas
+                ref={canvasRef}
+                width={1000}
+                height={400}
+                className="w-full h-auto rounded-xl"
+                style={{ maxHeight: '400px' }}
+              />
+            </div>
+          </div>
+          
+          {/* Current Message */}
+          {currentMessage && (
+            <motion.div
+              key={currentMessage}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="glass-card p-6 mb-8"
+            >
+              <div className="flex items-center gap-3">
+                <Info size={20} className="text-blue-400 flex-shrink-0" />
+                <p className="text-white text-lg font-medium">{currentMessage}</p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Legend */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="glass-card p-4 flex items-center gap-3">
+              <div className="w-6 h-6 rounded bg-blue-500"></div>
+              <span className="text-white font-medium">Default</span>
+            </div>
+            <div className="glass-card p-4 flex items-center gap-3">
+              <div className="w-6 h-6 rounded bg-yellow-500"></div>
+              <span className="text-white font-medium">Comparing</span>
+            </div>
+            <div className="glass-card p-4 flex items-center gap-3">
+              <div className="w-6 h-6 rounded bg-red-500"></div>
+              <span className="text-white font-medium">Swapping</span>
+            </div>
+            <div className="glass-card p-4 flex items-center gap-3">
+              <div className="w-6 h-6 rounded bg-green-500"></div>
+              <span className="text-white font-medium">Sorted</span>
+            </div>
+          </div>
+
+          {/* Progress Indicator */}
+          {visualizationState.steps.length > 0 && (
+            <div className="glass-card p-6">
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="font-semibold text-white">Visualization Progress</h4>
+                <span className="text-sm text-gray-400">
+                  {visualizationState.currentStep + 1} / {visualizationState.steps.length}
+                </span>
+              </div>
+              <div className="progress-track">
+                <div 
+                  className="progress-fill transition-all duration-300"
+                  style={{ 
+                    width: `${((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100}%` 
+                  }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-2">
+                <span>Start</span>
+                <span>{Math.round(((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100)}%</span>
+                <span>Complete</span>
+              </div>
+            </div>
+          )}
+        </motion.div>
       </div>
-
-      {visualizationState.steps.length > 0 && (
-        <div className="mt-6 bg-white/70 rounded-xl p-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">Progress</span>
-            <span className="text-sm text-gray-600">
-              {visualizationState.currentStep + 1} / {visualizationState.steps.length}
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="h-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300"
-              style={{ 
-                width: `${((visualizationState.currentStep + 1) / visualizationState.steps.length) * 100}%` 
-              }}
-            />
-          </div>
-        </div>
-      )}
-    </motion.div>
+    </section>
   );
 };
 

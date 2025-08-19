@@ -21,71 +21,89 @@ export const runPathfindingAlgorithm = async (
 };
 
 export const aStar = (grid: GridCell[][], start: Position, end: Position): AlgorithmStep[] => {
+  console.log('A* algorithm started with:', { start, end, gridSize: `${grid[0]?.length}x${grid.length}` });
+
   const steps: AlgorithmStep[] = [];
   const openSet: Position[] = [start];
   const closedSet: Position[] = [];
-  
-  // Initialize grid
+
+  // Create a deep copy of the grid
   const workingGrid = grid.map(row => row.map(cell => ({ ...cell })));
+
+  // Initialize start node
   workingGrid[start.y][start.x].distance = 0;
   workingGrid[start.y][start.x].heuristic = heuristic(start, end);
   workingGrid[start.y][start.x].fCost = workingGrid[start.y][start.x].heuristic;
 
+  // Add initial step
   steps.push({
     grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
     message: 'A* pathfinding started. Green is start, red is end.'
   });
 
-  while (openSet.length > 0) {
+  console.log('Initial step created, steps length:', steps.length);
+
+  let iterations = 0;
+  const maxIterations = 1000; // Prevent infinite loops
+
+  while (openSet.length > 0 && iterations < maxIterations) {
+    iterations++;
+
     // Find node with lowest fCost
     let current = openSet[0];
     let currentIndex = 0;
-    
+
     for (let i = 1; i < openSet.length; i++) {
       const currentCell = workingGrid[current.y][current.x];
       const candidateCell = workingGrid[openSet[i].y][openSet[i].x];
-      if (candidateCell.fCost < currentCell.fCost) {
+      if (candidateCell.fCost < currentCell.fCost ||
+        (candidateCell.fCost === currentCell.fCost && candidateCell.heuristic < currentCell.heuristic)) {
         current = openSet[i];
         currentIndex = i;
       }
     }
 
+    // Remove current from open set and add to closed set
     openSet.splice(currentIndex, 1);
     closedSet.push(current);
     workingGrid[current.y][current.x].isVisited = true;
 
+    // Add step showing current exploration
     steps.push({
       grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
       current,
       visited: [...closedSet],
-      message: `Exploring node at (${current.x}, ${current.y})`
+      message: `Exploring (${current.x}, ${current.y}) - Distance: ${workingGrid[current.y][current.x].distance}`
     });
 
     // Check if we reached the end
     if (current.x === end.x && current.y === end.y) {
       const path = reconstructPath(workingGrid, current);
       path.forEach(pos => {
-        workingGrid[pos.y][pos.x].isPath = true;
+        if (pos.y >= 0 && pos.y < workingGrid.length && pos.x >= 0 && pos.x < workingGrid[0].length) {
+          workingGrid[pos.y][pos.x].isPath = true;
+        }
       });
-      
+
       steps.push({
         grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
         path,
-        message: 'Path found! A* completed successfully.'
+        message: `Path found! Length: ${path.length} steps`
       });
-      break;
+      console.log('A* completed successfully, total steps:', steps.length);
+      return steps;
     }
 
     // Check neighbors
     const neighbors = getNeighbors(workingGrid, current);
     for (const neighbor of neighbors) {
-      if (closedSet.some(pos => pos.x === neighbor.x && pos.y === neighbor.y) || 
-          workingGrid[neighbor.y][neighbor.x].isWall) {
+      if (closedSet.some(pos => pos.x === neighbor.x && pos.y === neighbor.y) ||
+        workingGrid[neighbor.y][neighbor.x].isWall) {
         continue;
       }
 
       const tentativeDistance = workingGrid[current.y][current.x].distance + 1;
-      
+
       if (!openSet.some(pos => pos.x === neighbor.x && pos.y === neighbor.y)) {
         openSet.push(neighbor);
       } else if (tentativeDistance >= workingGrid[neighbor.y][neighbor.x].distance) {
@@ -123,7 +141,7 @@ export const dijkstra = (grid: GridCell[][], start: Position, end: Position): Al
       }
     }
   }
-  
+
   workingGrid[start.y][start.x].distance = 0;
 
   steps.push({
@@ -135,10 +153,10 @@ export const dijkstra = (grid: GridCell[][], start: Position, end: Position): Al
     // Find unvisited node with minimum distance
     let current = unvisited[0];
     let minIndex = 0;
-    
+
     for (let i = 1; i < unvisited.length; i++) {
-      if (workingGrid[unvisited[i].y][unvisited[i].x].distance < 
-          workingGrid[current.y][current.x].distance) {
+      if (workingGrid[unvisited[i].y][unvisited[i].x].distance <
+        workingGrid[current.y][current.x].distance) {
         current = unvisited[i];
         minIndex = i;
       }
@@ -160,7 +178,7 @@ export const dijkstra = (grid: GridCell[][], start: Position, end: Position): Al
       path.forEach(pos => {
         workingGrid[pos.y][pos.x].isPath = true;
       });
-      
+
       steps.push({
         grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
         path,
@@ -171,8 +189,8 @@ export const dijkstra = (grid: GridCell[][], start: Position, end: Position): Al
 
     const neighbors = getNeighbors(workingGrid, current);
     for (const neighbor of neighbors) {
-      if (workingGrid[neighbor.y][neighbor.x].isVisited || 
-          workingGrid[neighbor.y][neighbor.x].isWall) continue;
+      if (workingGrid[neighbor.y][neighbor.x].isVisited ||
+        workingGrid[neighbor.y][neighbor.x].isWall) continue;
 
       const newDistance = workingGrid[current.y][current.x].distance + 1;
       if (newDistance < workingGrid[neighbor.y][neighbor.x].distance) {
@@ -186,56 +204,75 @@ export const dijkstra = (grid: GridCell[][], start: Position, end: Position): Al
 };
 
 export const breadthFirstSearch = (grid: GridCell[][], start: Position, end: Position): AlgorithmStep[] => {
+  console.log('BFS started with:', { start, end });
+
   const steps: AlgorithmStep[] = [];
   const queue: Position[] = [start];
-  const visited: Position[] = [];
+  const visited = new Set<string>();
   const workingGrid = grid.map(row => row.map(cell => ({ ...cell })));
 
+  // Initial step
   steps.push({
     grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
     message: 'BFS started. Exploring level by level...'
   });
 
-  while (queue.length > 0) {
+  let iterations = 0;
+  const maxIterations = 500;
+
+  while (queue.length > 0 && iterations < maxIterations) {
+    iterations++;
     const current = queue.shift()!;
-    
-    if (visited.some(pos => pos.x === current.x && pos.y === current.y)) continue;
-    
-    visited.push(current);
+    const currentKey = `${current.x},${current.y}`;
+
+    if (visited.has(currentKey)) continue;
+
+    visited.add(currentKey);
     workingGrid[current.y][current.x].isVisited = true;
 
     steps.push({
       grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
       current,
-      visited: [...visited],
-      message: `BFS exploring (${current.x}, ${current.y})`
+      message: `BFS exploring (${current.x}, ${current.y}) - Queue size: ${queue.length}`
     });
 
+    // Check if we found the end
     if (current.x === end.x && current.y === end.y) {
       const path = reconstructPath(workingGrid, current);
       path.forEach(pos => {
-        workingGrid[pos.y][pos.x].isPath = true;
+        if (pos.y >= 0 && pos.y < workingGrid.length && pos.x >= 0 && pos.x < workingGrid[0].length) {
+          workingGrid[pos.y][pos.x].isPath = true;
+        }
       });
-      
+
       steps.push({
         grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
         path,
-        message: 'Path found! BFS completed.'
+        message: `Path found! BFS completed in ${iterations} iterations`
       });
-      break;
+      console.log('BFS completed successfully, total steps:', steps.length);
+      return steps;
     }
 
+    // Add neighbors to queue
     const neighbors = getNeighbors(workingGrid, current);
     for (const neighbor of neighbors) {
-      if (!visited.some(pos => pos.x === neighbor.x && pos.y === neighbor.y) &&
-          !queue.some(pos => pos.x === neighbor.x && pos.y === neighbor.y) &&
-          !workingGrid[neighbor.y][neighbor.x].isWall) {
+      const neighborKey = `${neighbor.x},${neighbor.y}`;
+      if (!visited.has(neighborKey) &&
+        !workingGrid[neighbor.y][neighbor.x].isWall &&
+        !queue.some(pos => pos.x === neighbor.x && pos.y === neighbor.y)) {
         workingGrid[neighbor.y][neighbor.x].parent = current;
         queue.push(neighbor);
       }
     }
   }
 
+  steps.push({
+    grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
+    message: 'No path found. BFS completed.'
+  });
+
+  console.log('BFS completed, total steps:', steps.length);
   return steps;
 };
 
@@ -252,9 +289,9 @@ export const depthFirstSearch = (grid: GridCell[][], start: Position, end: Posit
 
   while (stack.length > 0) {
     const current = stack.pop()!;
-    
+
     if (visited.some(pos => pos.x === current.x && pos.y === current.y)) continue;
-    
+
     visited.push(current);
     workingGrid[current.y][current.x].isVisited = true;
 
@@ -270,7 +307,7 @@ export const depthFirstSearch = (grid: GridCell[][], start: Position, end: Posit
       path.forEach(pos => {
         workingGrid[pos.y][pos.x].isPath = true;
       });
-      
+
       steps.push({
         grid: workingGrid.map(row => row.map(cell => ({ ...cell }))),
         path,
@@ -282,7 +319,7 @@ export const depthFirstSearch = (grid: GridCell[][], start: Position, end: Posit
     const neighbors = getNeighbors(workingGrid, current);
     for (const neighbor of neighbors.reverse()) { // Reverse for consistent DFS behavior
       if (!visited.some(pos => pos.x === neighbor.x && pos.y === neighbor.y) &&
-          !workingGrid[neighbor.y][neighbor.x].isWall) {
+        !workingGrid[neighbor.y][neighbor.x].isWall) {
         workingGrid[neighbor.y][neighbor.x].parent = current;
         stack.push(neighbor);
       }
@@ -309,7 +346,7 @@ const getNeighbors = (grid: GridCell[][], pos: Position): Position[] => {
   for (const dir of directions) {
     const newX = pos.x + dir.x;
     const newY = pos.y + dir.y;
-    
+
     if (newX >= 0 && newX < grid[0].length && newY >= 0 && newY < grid.length) {
       neighbors.push({ x: newX, y: newY });
     }

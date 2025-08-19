@@ -44,7 +44,7 @@ export const bubbleSort = (array: number[]): AlgorithmStep[] => {
         });
       }
     }
-    
+
     // Mark element as sorted
     steps.push({
       array: [...arr],
@@ -76,7 +76,7 @@ export const quickSort = (array: number[]): AlgorithmStep[] => {
   };
 
   quickSortHelper(0, arr.length - 1);
-  
+
   // Final step
   steps.push({
     array: [...arr],
@@ -108,7 +108,7 @@ const partition = (arr: number[], low: number, high: number, steps: AlgorithmSte
     if (arr[j] < pivot) {
       i++;
       [arr[i], arr[j]] = [arr[j], arr[i]];
-      
+
       steps.push({
         array: [...arr],
         swapping: [i, j],
@@ -142,7 +142,7 @@ export const mergeSort = (array: number[]): AlgorithmStep[] => {
   };
 
   mergeSortHelper(0, arr.length - 1);
-  
+
   steps.push({
     array: [...arr],
     sorted: Array.from({ length: arr.length }, (_, i) => i),
@@ -155,7 +155,7 @@ export const mergeSort = (array: number[]): AlgorithmStep[] => {
 const merge = (arr: number[], left: number, mid: number, right: number, steps: AlgorithmStep[]) => {
   const leftArray = arr.slice(left, mid + 1);
   const rightArray = arr.slice(mid + 1, right + 1);
-  
+
   let i = 0, j = 0, k = left;
 
   while (i < leftArray.length && j < rightArray.length) {
@@ -172,7 +172,7 @@ const merge = (arr: number[], left: number, mid: number, right: number, steps: A
       arr[k] = rightArray[j];
       j++;
     }
-    
+
     steps.push({
       array: [...arr],
       swapping: [k],
@@ -224,7 +224,7 @@ export const heapSort = (array: number[]): AlgorithmStep[] => {
     });
 
     heapify(arr, i, 0, steps);
-    
+
     steps.push({
       array: [...arr],
       sorted: Array.from({ length: n - i }, (_, idx) => n - 1 - idx),

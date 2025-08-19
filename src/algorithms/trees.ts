@@ -19,52 +19,81 @@ export const runTreeAlgorithm = async (
   }
 };
 
-export const bstInsert = (root: TreeNode | null, value: number): AlgorithmStep[] => {
-  const steps: AlgorithmStep[] = [];
-  let newRoot = root;
+// Helper function to deep copy tree
+const deepCopyTree = (node: TreeNode | null): TreeNode | null => {
+  if (!node) return null;
+  return {
+    value: node.value,
+    id: node.id,
+    left: deepCopyTree(node.left || null),
+    right: deepCopyTree(node.right || null),
+    x: node.x,
+    y: node.y,
+    highlighted: node.highlighted
+  };
+};
 
-  if (!root) {
-    newRoot = createNode(value, 'root');
+export const bstInsert = (root: TreeNode | null, value: number): AlgorithmStep[] => {
+  console.log('BST Insert started with:', { root: root?.value, value });
+
+  const steps: AlgorithmStep[] = [];
+
+  // Create a working copy to avoid mutating the original
+  let workingRoot = deepCopyTree(root);
+
+  if (!workingRoot) {
+    workingRoot = createNode(value, '0');
     steps.push({
-      tree: newRoot,
-      highlightedNodes: [parseInt(newRoot.id)],
+      tree: deepCopyTree(workingRoot),
+      highlightedNodes: [parseInt(workingRoot.id)],
       message: `Created root node with value ${value}`
     });
+    console.log('Created root node, steps length:', steps.length);
     return steps;
   }
 
-  const insertHelper = (node: TreeNode, value: number, path: string = ''): TreeNode => {
+  // Add initial step showing the current tree
+  steps.push({
+    tree: deepCopyTree(workingRoot),
+    highlightedNodes: [],
+    message: `Starting BST insertion of ${value}`
+  });
+
+  const insertHelper = (node: TreeNode, value: number): TreeNode => {
+    // Highlight current node
     steps.push({
-      tree: newRoot,
+      tree: deepCopyTree(workingRoot),
       highlightedNodes: [parseInt(node.id)],
-      message: `Comparing ${value} with ${node.value} at ${path || 'root'}`
+      message: `Comparing ${value} with ${node.value}`
     });
 
     if (value < node.value) {
       if (!node.left) {
-        node.left = createNode(value, `${node.id}-L`);
+        const newNodeId = `${node.id}L`;
+        node.left = createNode(value, newNodeId);
         steps.push({
-          tree: newRoot,
+          tree: deepCopyTree(workingRoot),
           highlightedNodes: [parseInt(node.left.id)],
           message: `Inserted ${value} as left child of ${node.value}`
         });
       } else {
-        insertHelper(node.left, value, `${path}-L`);
+        insertHelper(node.left, value);
       }
     } else if (value > node.value) {
       if (!node.right) {
-        node.right = createNode(value, `${node.id}-R`);
+        const newNodeId = `${node.id}R`;
+        node.right = createNode(value, newNodeId);
         steps.push({
-          tree: newRoot,
+          tree: deepCopyTree(workingRoot),
           highlightedNodes: [parseInt(node.right.id)],
           message: `Inserted ${value} as right child of ${node.value}`
         });
       } else {
-        insertHelper(node.right, value, `${path}-R`);
+        insertHelper(node.right, value);
       }
     } else {
       steps.push({
-        tree: newRoot,
+        tree: deepCopyTree(workingRoot),
         highlightedNodes: [parseInt(node.id)],
         message: `Value ${value} already exists in the tree`
       });
@@ -72,15 +101,18 @@ export const bstInsert = (root: TreeNode | null, value: number): AlgorithmStep[]
     return node;
   };
 
-  if (newRoot) {
-    insertHelper(newRoot, value);
+  if (workingRoot) {
+    insertHelper(workingRoot, value);
   }
-  
+
+  // Final step
   steps.push({
-    tree: newRoot,
+    tree: deepCopyTree(workingRoot),
+    highlightedNodes: [],
     message: `BST insertion completed. Tree now contains ${value}`
   });
 
+  console.log('BST Insert completed, steps:', steps.length);
   return steps;
 };
 
@@ -227,7 +259,7 @@ export const bstDelete = (root: TreeNode | null, value: number): AlgorithmStep[]
   };
 
   newRoot = deleteHelper(newRoot, value) || createNode(0, 'empty');
-  
+
   steps.push({
     tree: newRoot,
     message: `BST deletion completed.`
@@ -237,6 +269,8 @@ export const bstDelete = (root: TreeNode | null, value: number): AlgorithmStep[]
 };
 
 export const treeTraversal = (root: TreeNode | null): AlgorithmStep[] => {
+  console.log('Tree traversal started with:', root?.value);
+
   const steps: AlgorithmStep[] = [];
 
   if (!root) {
@@ -247,35 +281,41 @@ export const treeTraversal = (root: TreeNode | null): AlgorithmStep[] => {
     return steps;
   }
 
+  // Create a working copy
+  const workingRoot = deepCopyTree(root);
+
   // Inorder traversal
   const inorderResult: number[] = [];
   const inorderTraversal = (node: TreeNode | null) => {
     if (!node) return;
 
     inorderTraversal(node.left || null);
-    
+
     steps.push({
-      tree: root,
+      tree: deepCopyTree(workingRoot),
       highlightedNodes: [parseInt(node.id)],
       message: `Inorder: Visiting ${node.value}`
     });
     inorderResult.push(node.value);
-    
+
     inorderTraversal(node.right || null);
   };
 
   steps.push({
-    tree: root,
+    tree: deepCopyTree(workingRoot),
     message: 'Starting inorder traversal (Left → Root → Right)'
   });
 
-  inorderTraversal(root);
+  if (workingRoot) {
+    inorderTraversal(workingRoot);
+  }
 
   steps.push({
-    tree: root,
+    tree: deepCopyTree(workingRoot),
     message: `Inorder traversal completed: [${inorderResult.join(', ')}]`
   });
 
+  console.log('Tree traversal completed, steps:', steps.length);
   return steps;
 };
 
@@ -286,6 +326,14 @@ const createNode = (value: number, id: string): TreeNode => ({
   left: null,
   right: null
 });
+
+const getMaxNodeId = (node: TreeNode | null): number => {
+  if (!node) return -1;
+  const currentId = parseInt(node.id) || 0;
+  const leftMax = getMaxNodeId(node.left || null);
+  const rightMax = getMaxNodeId(node.right || null);
+  return Math.max(currentId, leftMax, rightMax);
+};
 
 const findMin = (node: TreeNode): TreeNode => {
   while (node.left) {
