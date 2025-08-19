@@ -431,26 +431,32 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
         {/* Right Column - Complexity */}
         <div className="space-y-4">
           {/* Time Complexity - Compact */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="glass-card p-4">
             <div className="flex items-center gap-2 mb-3">
               <Clock className="text-orange-500" size={18} />
-              <h4 className="font-semibold text-gray-800">Time Complexity</h4>
+              <h4 className="font-semibold text-white">Time Complexity</h4>
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">Best:</span>
-                <div className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300" style={{
-                  background: getComplexityColor(details.bestCase)
-                }}>
+              <span className="text-sm font-medium text-gray-300">Best:</span>
+                <div
+                  className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-white/20"
+                  style={{
+                    background: getComplexityColor(details.bestCase)
+                  }}
+                >
                   {details.bestCase}
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">Worst:</span>
-                <div className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-gray-300" style={{
-                  background: getComplexityColor(details.worstCase)
-                }}>
+              <span className="text-sm font-medium text-gray-300">Worst:</span>
+                <div
+                  className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-white/20"
+                  style={{
+                    background: getComplexityColor(details.worstCase)
+                  }}
+                >
                   {details.worstCase}
                 </div>
               </div>
@@ -458,32 +464,35 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
           </div>
 
           {/* Space Complexity - Compact */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="glass-card p-4">
             <div className="flex items-center gap-2 mb-3">
               <HardDrive className="text-green-500" size={18} />
-              <h4 className="font-semibold text-gray-800">Space Complexity</h4>
+              <h4 className="font-semibold text-white">Space Complexity</h4>
             </div>
 
             <div className="text-center">
-              <div className="text-lg px-4 py-2 rounded-full text-white font-mono font-bold inline-block shadow-lg border border-gray-300" style={{
-                background: getComplexityColor(details.spaceComplexity)
-              }}>
+            <div
+                className="text-lg px-4 py-2 rounded-full text-white font-mono font-bold inline-block shadow-lg border border-white/20"
+                style={{
+                  background: getComplexityColor(details.spaceComplexity)
+                }}
+              >
                 {details.spaceComplexity}
               </div>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl">
-            <h4 className="font-semibold text-gray-800 mb-2">Quick Stats</h4>
+          <div className="glass-card p-4">
+            <h4 className="font-semibold text-white mb-2">Quick Stats</h4>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="text-center p-2 bg-white rounded-lg">
-                <div className="font-semibold text-gray-800">Category</div>
-                <div className="text-gray-600">{details.category}</div>
+              <div className="text-center p-2 glass-card">
+                <div className="font-semibold text-white">Category</div>
+                <div className="text-gray-300">{details.category}</div>
               </div>
-              <div className="text-center p-2 bg-white rounded-lg">
-                <div className="font-semibold text-gray-800">Difficulty</div>
-                <div className="text-gray-600">
+              <div className="text-center p-2 glass-card">
+                <div className="font-semibold text-white">Difficulty</div>
+                <div className="text-gray-300">
                   {getDifficulty(algorithm)}
                 </div>
               </div>
@@ -493,8 +502,8 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
       </div>
 
       {/* Color Legend - Adaptive based on category */}
-      <div className="mt-6 bg-gradient-to-r from-gray-50 to-blue-50 p-4 rounded-xl">
-        <h4 className="font-semibold text-gray-800 mb-3 text-center">Visualization Colors</h4>
+      <div className="mt-6 glass-card p-4">
+        <h4 className="font-semibold text-white mb-3 text-center">Visualization Colors</h4>
         <div className="flex justify-center gap-4 text-xs flex-wrap">
           {details.category === 'Sorting' && (
             <>

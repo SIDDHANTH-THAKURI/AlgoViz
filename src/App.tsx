@@ -21,7 +21,7 @@ import { runPathfindingAlgorithm } from './algorithms/pathfinding';
 import { runSearchAlgorithm } from './algorithms/searching';
 import { runTreeAlgorithm } from './algorithms/trees';
 
-// Inline Controls component to avoid import issues
+// Inline Controls component
 function Controls({
   visualizationState,
   onGenerateData,
@@ -71,10 +71,11 @@ function Controls({
         transition={{ duration: 0.6 }}
         className="space-y-6"
       >
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        {/* Buttons row */}
+        <div className="button-row flex flex-wrap justify-center gap-4">
           {(selectedCategory === 'searching' || selectedCategory === 'trees') && (
-            <div className="flex items-center gap-2">
-              <label htmlFor="target" className="text-gray-700 font-semibold">
+            <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg shadow-inner">
+              <label htmlFor="target" className="text-gray-300 font-semibold">
                 {selectedCategory === 'searching' ? 'Search for:' : 'Value:'}
               </label>
               <input
@@ -101,41 +102,28 @@ function Controls({
           </button>
 
           {!isPlaying ? (
-            <button
-              onClick={onPlay}
-              className="btn-primary flex items-center gap-3"
-            >
+            <button onClick={onPlay} className="btn-primary flex items-center gap-3">
               <span>▶️</span>
-              <span className="font-semibold">
-                {isPaused ? 'Resume' : 'Start Visualization'}
-              </span>
+              <span className="font-semibold">{isPaused ? 'Resume' : 'Start Visualization'}</span>
             </button>
           ) : (
-            <button
-              onClick={handlePause}
-              className="btn-warning flex items-center gap-3"
-            >
+            <button onClick={handlePause} className="btn-warning flex-1 flex items-center justify-center gap-2">
               <span>⏸️</span>
               <span className="font-semibold">Pause</span>
             </button>
           )}
 
-          <button
-            onClick={handleReset}
-            className="btn-danger flex items-center gap-3"
-          >
+          <button onClick={handleReset} className="btn-danger flex-1 flex items-center justify-center gap-2">
             <span>🔄</span>
             <span className="font-semibold">Reset</span>
           </button>
         </div>
 
-        <div className="flex items-center justify-center gap-6 bg-white/50 rounded-2xl p-4 backdrop-blur-sm">
-          <label htmlFor="speed" className="text-gray-700 font-semibold text-lg">
-            Speed:
-          </label>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500 font-medium">Slow</span>
+        {/* Speed row */}
+        <div className="controls-row bg-white/10 rounded-xl p-4 shadow-inner flex items-center justify-between gap-4">
+          <div className="speed-group flex items-center gap-4 flex-1">
+            <label htmlFor="speed" className="speed-label text-white font-semibold text-lg">Speed:</label>
+            <span className="speed-endpoint text-gray-300 text-sm">Slow</span>
             <input
               id="speed"
               type="range"
@@ -143,16 +131,15 @@ function Controls({
               max="100"
               value={speed}
               onChange={(e) => onSpeedChange(parseInt(e.target.value))}
-              className="speed-slider w-40"
+              className="speed-slider flex-1 h-2 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg appearance-none cursor-pointer"
             />
-            <span className="text-sm text-gray-500 font-medium">Fast</span>
+            <span className="speed-endpoint text-gray-300 text-sm">Fast</span>
           </div>
 
-          <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-xl font-bold min-w-[60px] text-center">
-            {speed}%
-          </div>
+          <div className="speed-percent text-white font-bold text-xl w-16 text-center">{speed}%</div>
         </div>
 
+        {/* Status panel */}
         {visualizationState.steps.length > 0 && (
           <div className="text-center bg-white/70 rounded-xl p-4 backdrop-blur-sm">
             <div className="text-lg font-semibold text-gray-700 mb-2">
@@ -190,16 +177,9 @@ function App() {
 
       const timer = setTimeout(() => {
         if (visualizationState.currentStep < visualizationState.steps.length - 1) {
-          setVisualizationState(prev => ({
-            ...prev,
-            currentStep: prev.currentStep + 1
-          }));
+          setVisualizationState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
         } else {
-          setVisualizationState(prev => ({
-            ...prev,
-            isPlaying: false,
-            isPaused: false
-          }));
+          setVisualizationState(prev => ({ ...prev, isPlaying: false, isPaused: false }));
         }
       }, delay);
 
@@ -216,11 +196,12 @@ function App() {
     if (!visualizationState.isPlaying) {
       switch (selectedCategory) {
         case 'sorting':
-        case 'searching':
+        case 'searching': {
           const newArray = generateRandomArray(25);
           setArray(newArray);
           setSearchTarget(newArray[Math.floor(Math.random() * newArray.length)]);
           break;
+        }
         case 'pathfinding':
           setGridData(generateGrid());
           break;
@@ -246,15 +227,14 @@ function App() {
   const handleCategoryChange = (category: AlgorithmCategory) => {
     if (!visualizationState.isPlaying) {
       setSelectedCategory(category);
-      // Set default algorithm for each category
-      const defaultAlgorithms: Record<AlgorithmCategory, AlgorithmType> = {
+      const defaults: Record<AlgorithmCategory, AlgorithmType> = {
         sorting: 'bubble',
         pathfinding: 'astar',
         searching: 'binary-search',
         trees: 'bst-insert',
         graphs: 'graph-bfs'
       };
-      setSelectedAlgorithm(defaultAlgorithms[category] as AlgorithmType);
+      setSelectedAlgorithm(defaults[category] as AlgorithmType);
       setVisualizationState(prev => ({
         ...prev,
         steps: [],
@@ -287,34 +267,19 @@ function App() {
 
   const handlePlay = async () => {
     if (visualizationState.isPaused) {
-      setVisualizationState(prev => ({
-        ...prev,
-        isPlaying: true,
-        isPaused: false
-      }));
+      setVisualizationState(prev => ({ ...prev, isPlaying: true, isPaused: false }));
       return;
     }
 
     try {
       let steps: any[] = [];
 
-      console.log('Running algorithm:', selectedAlgorithm, 'in category:', selectedCategory);
-
       switch (selectedCategory) {
         case 'sorting':
           steps = await runSortingAlgorithm(selectedAlgorithm as any, [...array]);
           break;
         case 'pathfinding':
-          console.log('Pathfinding data:', {
-            gridSize: `${gridData.grid[0]?.length}x${gridData.grid.length}`,
-            start: gridData.start,
-            end: gridData.end,
-            algorithm: selectedAlgorithm
-          });
-          if (!gridData.grid || gridData.grid.length === 0) {
-            console.error('Grid is empty, cannot run pathfinding algorithm');
-            return;
-          }
+          if (!gridData.grid || gridData.grid.length === 0) return;
           steps = await runPathfindingAlgorithm(
             selectedAlgorithm as any,
             gridData.grid,
@@ -326,9 +291,7 @@ function App() {
           steps = await runSearchAlgorithm(selectedAlgorithm as any, [...array], searchTarget);
           break;
         case 'trees':
-          console.log('Tree algorithm:', selectedAlgorithm, 'tree:', tree?.value, 'value:', searchTarget);
           if (!tree) {
-            console.error('Tree is null, generating a new tree');
             const newTree = generateSampleTree();
             setTree(newTree);
             steps = await runTreeAlgorithm(selectedAlgorithm as any, newTree, searchTarget);
@@ -338,12 +301,7 @@ function App() {
           break;
       }
 
-      console.log('Generated steps:', steps.length);
-
-      if (steps.length === 0) {
-        console.error('No steps generated for algorithm:', selectedAlgorithm);
-        return;
-      }
+      if (steps.length === 0) return;
 
       setVisualizationState(prev => ({
         ...prev,
@@ -411,27 +369,39 @@ function App() {
 
             {selectedCategory === 'sorting' || selectedCategory === 'searching' ? (
               <Visualizer
-                array={visualizationState.steps.length > 0 && visualizationState.steps[visualizationState.currentStep]?.array
-                  ? visualizationState.steps[visualizationState.currentStep].array!
-                  : array}
+                array={
+                  visualizationState.steps.length > 0 &&
+                  visualizationState.steps[visualizationState.currentStep]?.array
+                    ? visualizationState.steps[visualizationState.currentStep].array!
+                    : array
+                }
                 visualizationState={visualizationState}
               />
             ) : selectedCategory === 'pathfinding' ? (
               <GridVisualizer
-                grid={visualizationState.steps.length > 0 && visualizationState.steps[visualizationState.currentStep]?.grid
-                  ? visualizationState.steps[visualizationState.currentStep].grid!
-                  : gridData.grid}
+                grid={
+                  visualizationState.steps.length > 0 &&
+                  visualizationState.steps[visualizationState.currentStep]?.grid
+                    ? visualizationState.steps[visualizationState.currentStep].grid!
+                    : gridData.grid
+                }
                 onCellClick={handleGridCellClick}
                 isInteractive={!visualizationState.isPlaying}
               />
             ) : selectedCategory === 'trees' ? (
               <TreeVisualizer
-                tree={visualizationState.steps.length > 0 && visualizationState.steps[visualizationState.currentStep]?.tree
-                  ? visualizationState.steps[visualizationState.currentStep].tree!
-                  : tree}
-                highlightedNodes={visualizationState.steps.length > 0 && visualizationState.steps[visualizationState.currentStep]?.highlightedNodes
-                  ? visualizationState.steps[visualizationState.currentStep].highlightedNodes!
-                  : []}
+                tree={
+                  visualizationState.steps.length > 0 &&
+                  visualizationState.steps[visualizationState.currentStep]?.tree
+                    ? visualizationState.steps[visualizationState.currentStep].tree!
+                    : tree
+                }
+                highlightedNodes={
+                  visualizationState.steps.length > 0 &&
+                  visualizationState.steps[visualizationState.currentStep]?.highlightedNodes
+                    ? visualizationState.steps[visualizationState.currentStep].highlightedNodes!
+                    : []
+                }
               />
             ) : (
               <div className="glass-card p-16 text-center">
@@ -469,7 +439,7 @@ function App() {
         </motion.section>
       </main>
 
-      {/* Enhanced Footer */}
+      {/* Footer */}
       <footer className="relative mt-24 py-16 border-t border-white/10">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 via-purple-900/50 to-slate-900/50 backdrop-blur-sm" />
 
@@ -495,12 +465,8 @@ function App() {
           </div>
 
           <div className="border-t border-white/10 pt-8">
-            <p className="text-gray-400">
-              Built with ❤️ for algorithm enthusiasts and learners
-            </p>
-            <p className="text-gray-500 text-sm mt-2">
-              © 2024 AlgoViz - Interactive Algorithm Visualizations
-            </p>
+            <p className="text-gray-400">Built with ❤️ for algorithm enthusiasts and learners</p>
+            <p className="text-gray-500 text-sm mt-2">© 2024 AlgoViz - Interactive Algorithm Visualizations</p>
           </div>
         </div>
       </footer>
