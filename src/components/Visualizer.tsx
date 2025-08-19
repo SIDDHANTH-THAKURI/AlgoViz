@@ -111,7 +111,7 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
   }, [visualizationState.currentStep, visualizationState.steps]);
 
   return (
-    <section className="py-16 relative">
+    <section className="relative">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -129,15 +129,6 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <BarChart3 size={32} className="text-cyan-400" />
-            <h2 className="text-4xl md:text-5xl font-bold text-cyan-300">
-              Live Visualization
-            </h2>
-          </div>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Watch algorithms work in real-time with beautiful animations
-          </p>
         </motion.div>
 
         <motion.div

@@ -333,6 +333,12 @@ function App() {
         steps,
         currentStep: 0
       }));
+
+      // Scroll to the live visualization section
+      const liveVizSection = document.getElementById('live-visualization-section');
+      if (liveVizSection) {
+        liveVizSection.scrollIntoView({ behavior: 'smooth' });
+      }
     } catch (error) {
       console.error('Error running algorithm:', error);
     }
@@ -340,7 +346,12 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header onStartVisualization={() => {
+        const algorithmSection = document.getElementById('algorithm-selection-section');
+        if (algorithmSection) {
+          algorithmSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }} />
 
       <main className="container mx-auto px-6 py-12 space-y-12 max-w-6xl">
         {/* Algorithm Selection */}
@@ -348,6 +359,7 @@ function App() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          id="algorithm-selection-section"
         >
           <AlgorithmCategorySelector
             selectedCategory={selectedCategory}
@@ -381,7 +393,15 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative"
+          id="live-visualization-section"
         >
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-white mb-2">
+              {selectedAlgorithm.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+            </h3>
+            <p className="text-gray-300">Watch the algorithm work in real-time</p>
+          </div>
+
           <div className="relative">
             <div className="viz-glow" />
 

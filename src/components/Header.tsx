@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Brain, Code2, Zap, Sparkles, Play, ArrowRight } from 'lucide-react';
 
-const Header = () => {
+const Header = ({ onStartVisualization }: { onStartVisualization: () => void }) => {
   return (
     <header className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -170,6 +170,7 @@ const Header = () => {
               boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3), 0 4px 15px rgba(147, 51, 234, 0.2)',
               background: 'linear-gradient(135deg, #2563eb 0%, #9333ea 100%)'
             }}
+            onClick={onStartVisualization}
           >
             <span className="text-lg relative z-10">Start Visualizing</span>
             <ArrowRight 
