@@ -20,9 +20,9 @@ Visit the live application: [AlgoViz on Vercel](https://your-app-url.vercel.app)
 - **Frontend**: React 18 + TypeScript
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Build Tool**: Vite
-- **Deployment**: Vercel
+- **Icons**:   Lucide React
+- **Build Tool**:  Vite
+- **Deployment**: Render/Vercel
 
 ## 📦 Installation
 
