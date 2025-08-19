@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Global font uses Comic Sans for a playful style */
 
 /* Reset and base styles */
 * {
@@ -9,7 +9,7 @@
 
 html,
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
   background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
   min-height: 100vh;
   color: #eaf0ff;
@@ -1571,19 +1571,19 @@ Additional classes for AlgorithmMessage */
 /* === Premium style for Algorithms grid cards ============================ */
 .algorithm-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-radius: 16px;
   padding: 1.1rem;
   text-align: center;
   cursor: pointer;
 
   color: #fff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
   min-height: 140px;
 
   display: flex;
@@ -1593,20 +1593,21 @@ Additional classes for AlgorithmMessage */
 }
 
 .algorithm-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .5);
 }
 
 .algorithm-card:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 6px rgba(124, 58, 237, .35), 0 14px 36px rgba(0, 0, 0, .35);
+  box-shadow: 0 0 0 6px rgba(124, 58, 237, .35), 0 16px 40px rgba(0, 0, 0, .45);
 }
 
 /* active (selected) card */
 .algorithm-card.active {
   background: linear-gradient(135deg, #60a5fa 0%, #8b5cf6 60%, #ec4899 100%);
-  border-color: transparent;
+  border: 2px solid transparent;
   color: #0b1020;
   box-shadow: 0 28px 70px rgba(139, 92, 246, .35);
 }
