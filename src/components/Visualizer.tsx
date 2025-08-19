@@ -131,7 +131,7 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <BarChart3 size={32} className="text-cyan-400" />
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold text-cyan-300">
               Live Visualization
             </h2>
           </div>
@@ -149,8 +149,8 @@ const Visualizer = ({ array, visualizationState }: VisualizerProps) => {
           {/* Visualization Header */}
           <div className="viz-toolbar">
             <div className="flex items-center gap-3">
-              <BarChart3 size={22} className="text-purple-600" />
-              <h2 className="text-2xl font-extrabold text-gray-800">Live Visualization</h2>
+              <BarChart3 size={22} className="text-purple-400" />
+              <h2 className="text-2xl font-extrabold text-white">Live Visualization</h2>
             </div>
             <span className="viz-badge">Array: {array.length}</span>
           </div>
