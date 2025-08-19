@@ -681,7 +681,7 @@ input[type="range"].speed-slider::-moz-range-thumb:active {
 }
 
 .bg-blue-200 {
-  background-color: #dbeafe;
+  background-color: #9ac5fe;
 }
 
 .bg-white {
@@ -1808,7 +1808,7 @@ Additional classes for AlgorithmMessage */
   margin: 0 auto;
   border-radius: 16px;
   padding: 12px;
-  background: linear-gradient(180deg, #fff, #f8fafc);
+  background: linear-gradient(180deg, #68ff4e 0%, #5ba4fd 100%);
   border: 1px solid rgba(0, 0, 0, .06);
   box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
 }

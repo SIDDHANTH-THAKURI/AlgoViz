@@ -438,23 +438,27 @@ const AlgorithmInfo = ({ algorithm }: AlgorithmInfoProps) => {
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center">
               <span className="text-sm font-medium text-gray-300">Best:</span>
                 <div
                   className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-white/20"
                   style={{
-                    background: getComplexityColor(details.bestCase)
+                    background: getComplexityColor(details.bestCase),
+                    padding: "4px",
+                    marginLeft: "5px"
                   }}
                 >
                   {details.bestCase}
                 </div>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex items-center">
               <span className="text-sm font-medium text-gray-300">Worst:</span>
                 <div
                   className="text-xs px-3 py-1.5 rounded-full text-white font-mono font-bold shadow-lg border border-white/20"
                   style={{
-                    background: getComplexityColor(details.worstCase)
+                    background: getComplexityColor(details.worstCase),
+                    padding: "4px",
+                    marginLeft: "5px"
                   }}
                 >
                   {details.worstCase}
