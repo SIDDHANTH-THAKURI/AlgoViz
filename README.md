@@ -13,7 +13,7 @@ A beautiful, interactive algorithm visualization platform built with React, Type
 
 ## 🚀 Live Demo
 
-Visit the live application: [AlgoViz on Vercel](https://your-app-url.vercel.app)
+Visit the live application: [AlgoViz on Vercel](https://algo-viz-pi.vercel.app/)
 
 ## 🛠️ Tech Stack
 
