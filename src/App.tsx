@@ -8,6 +8,7 @@ import TreeVisualizer from './components/TreeVisualizer';
 import AlgorithmInfo from './components/AlgorithmInfo';
 import AlgorithmCategorySelector from './components/AlgorithmCategorySelector';
 import AlgorithmMessage from './components/AlgorithmMessage';
+import ComplexityAnalyzer from './components/ComplexityAnalyzer';
 import type {
   AlgorithmType,
   AlgorithmCategory,
@@ -508,6 +509,7 @@ function App() {
           </div>
         </div>
       </footer>
+      <ComplexityAnalyzer />
     </div>
   );
 }
